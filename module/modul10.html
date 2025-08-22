@@ -1,0 +1,876 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"/>
+<title>Modul 1 – Tehnician activități economice</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="icon" href="data:,"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- ===== DESIGN TOKENS ===== -->
+<style>
+:root {
+  --clr-main: #7c4dff;
+  --clr-accent: #512da8;
+  --clr-bg: #f3e5f5;
+  --clr-text: #222;
+  --clr-error: #d62828;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --clr-bg: #121212;
+    --clr-text: #eee;
+    --clr-main: #1976d2;
+    --clr-accent: #90caf9;
+    --clr-error: #ef5350;
+  }
+}
+body.dark,
+body[data-theme="dark"] {
+  --clr-bg: #2a1b3d;
+  --clr-text: #ede7f6;
+  --clr-main: #7c4dff;
+  --clr-accent: #b39ddb;
+  --clr-error: #ef5350;
+}
+body.dark,
+body[data-theme="dark"] {
+  background: var(--clr-bg) !important;
+  color: var(--clr-text) !important;
+}
+body.dark header,
+body[data-theme="dark"] header {
+  background: var(--clr-main);
+  color: #fff;
+}
+body.dark aside,
+body.dark #content,
+body.dark .frame {
+  background: var(--clr-bg);
+  color: var(--clr-text);
+}
+body.dark input,
+body[data-theme="dark"] input,
+body.dark textarea,
+body[data-theme="dark"] textarea {
+  background: #23272f;
+  color: #fff;
+  border: 1px solid #333;
+}
+body.dark button,
+body[data-theme="dark"] button {
+  background: var(--clr-accent);
+  color: #fff;
+}
+body.dark .chapter.active > .chapter-title,
+body[data-theme="dark"] .chapter.active > .chapter-title {
+  background: var(--clr-main);
+  color: #fff;
+}
+body.dark .chapter-menu a,
+body[data-theme="dark"] .chapter-menu a {
+  color: var(--clr-accent);
+}
+body.dark .chapter-menu a:hover,
+body.dark .chapter-menu a.active,
+body[data-theme="dark"] .chapter-menu a:hover,
+body[data-theme="dark"] .chapter-menu a.active {
+  background: var(--clr-accent);
+  color: #222;
+}
+body.dark table,
+body[data-theme="dark"] table {
+  background: #23272f;
+  color: #fff;
+}
+body.dark th,
+body[data-theme="dark"] th {
+  background: #222;
+  color: #fff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:var(--clr-bg);color:var(--clr-text)}
+h1,h2,h3{margin:0 0 .5em}
+button{cursor:pointer;border:none;border-radius:var(--radius);padding:.5em .9em;font-size:.9em;transition:transform .2s var(--ease)}
+button:hover{transform:translateY(-2px)}
+label{cursor:pointer}
+
+
+/* === HEADER === */
+header{display:flex;justify-content:space-between;align-items:center;padding:.6em 1em;background:var(--clr-main);color:#fff}
+header form{display:flex;gap:.5em;flex-wrap:wrap}
+header input{padding:.4em;border-radius:var(--radius);border:none;font-size:.85em}
+header button{background:#fff;color:var(--clr-main)}
+
+
+/* === TABS === */
+#tabs{display:flex;justify-content:center;gap:.5em;padding:.5em 0;background:#fff;box-shadow:var(--shadow)}
+.tab-btn{background:var(--clr-accent);color:#fff}
+.tab-btn.active{background:var(--clr-main);transform:scale(1.05)}
+
+
+/* === LAYOUT === */
+main{display:flex;gap:1em;padding:1em;max-width:1200px;margin:auto}
+aside {
+  width: 320px;
+  flex-shrink: 0;
+  background: var(--clr-bg); /* era #fff */
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1em;
+}
+#content {
+  flex: 1;
+  background: var(--clr-bg); /* era #fff */
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.2em;
+  min-height: 60vh;
+}
+.frame {
+  background: var(--clr-bg); /* era #fff */
+  padding: 1.5em;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  max-width: 900px;
+  margin: 1em auto;
+}
+input, textarea {
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  border: 1px solid #ccc;
+}
+button {
+  background: var(--clr-main);
+  color: #fff;
+}
+
+
+/* === QUIZ === */
+#progressBar{height:8px;background:#ddd;border-radius:4px;overflow:hidden;margin:.5em 0}
+#progressFill{height:100%;background:var(--clr-accent);transition:width .3s var(--ease)}
+.question-page{display:none}
+.question-page.active{display:block}
+.result-inline{margin-top:.4em}
+.correct{color:var(--clr-accent);font-weight:600}
+.incorrect{color:var(--clr-error);font-weight:600}
+table{border-collapse:collapse;width:100%;margin-top:1em;font-size:.9em}
+th,td{border:1px solid #ddd;padding:.4em}
+th{background:#eee}
+/* === MEDIA === */
+#pdfViewer,#videoViewer{display:none;width:100%;max-width:100%;margin-top:.5em}
+video{max-height:60vh;border-radius:var(--radius)}
+/* === SUMMARY === */
+.frame{background:#fff;padding:1.5em;border-radius:var(--radius);box-shadow:var(--shadow);max-width:900px;margin:1em auto}
+.hidden{display:none}
+
+.media-btns {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+.media-btn {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  background: #cfe1f0;
+  border: 2px solid var(--clr-main);
+  color: var(--clr-main);
+  font-weight: 600;
+  font-size: 1em;
+  padding: .6em 1.2em;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(170, 184, 182, 0.07);
+  transition: background .2s, color .2s, border .2s, transform .2s;
+}
+.media-btn:hover, .media-btn.active {
+  background: var(--clr-main);
+  color: #fff;
+  border-color: var(--clr-main);
+  transform: translateY(-2px) scale(1.04);
+}
+.media-btn svg {
+  display: block;
+}
+
+.media-links {
+  margin-top: .2em;
+  display: flex;
+  gap: .5em;
+}
+
+.media-links a {
+  font-size: .85em;
+  color: var(--clr-accent);
+  text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background .2s, color .2s;
+}
+.media-links a:hover, .media-links a.active {
+  background: var(--clr-accent);
+  color: #fff;
+}
+
+.year-header {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  cursor: pointer;
+  padding: .3em 0;
+  user-select: none;
+  outline: none;
+}
+.year-header:focus {
+  background: #e0f7fa;
+  border-radius: var(--radius);
+}
+.year-header .arrow {
+  font-size: 1em;
+  transition: transform .2s;
+}
+.chapters {
+  margin-left: 1.2em;
+  margin-bottom: .5em;
+}
+.chapter {
+  margin-bottom: .5em;
+}
+.chapter-title {
+  font-weight: 600;
+  margin-bottom: .2em;
+  color: var(--clr-main);
+}
+.chapter-desc {
+  background: rgba(89, 158, 223, 0.13); /* un albastru deschis, transparent */
+  color: var(--clr-main);
+  font-size: .97em;
+  font-weight: 500;
+  margin-bottom: .3em;
+  margin-top: .1em;
+  padding: .35em .7em;
+  border-left: 4px solid var(--clr-main);
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(89,158,223,0.07);
+  transition: background .2s;
+}
+.chapter-menu {
+  display: flex;
+  flex-direction: column;
+  gap: .2em;
+  margin-left: .7em;
+}
+.chapter-group {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+}
+.chapter-label {
+  font-size: .92em;
+  color: var(--clr-accent);
+  font-weight: 500;
+}
+.chapter-sub {
+  display: flex;
+  gap: .3em;
+}
+.chapter-menu a {
+  font-size: .88em;
+  color: var(--clr-accent);
+  text-decoration: none;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: background .2s, color .2s;
+}
+.chapter-menu a:hover, .chapter-menu a.active {
+  background: var(--clr-accent);
+  color: #fff;
+}
+.chapter.active > .chapter-title {
+  background: #1976d2a4;   /* albastru */
+  color: #fff;
+  border-radius: var(--radius);
+  padding-left: .3em;
+  transition: background .2s;
+}
+.chapter-sub label {
+  display: flex;
+  align-items: center;
+  gap: .2em;
+  font-size: .9em;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background .2s, color .2s;
+}
+.chapter-sub input[type="radio"] {
+  accent-color: var(--clr-main);
+}
+.chapter-sub label:hover, .chapter-sub input[type="radio"]:checked + span {
+  background: var(--clr-main);
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <button onclick="location.href='../Index.html'" style="margin-right:1em;background:var(--clr-accent);color:#fff;border-radius:6px;padding:.5em 1.2em;font-weight:600;float:left;">⟵ Înapoi la Index</button>
+  <h1>Modul 1 – Tehnician activități economice</h1>
+  <form id="userForm">
+    <input id="prenume" placeholder="Prenume" required>
+    <input id="nume"   placeholder="Nume"   required>
+    <input id="email"  placeholder="Email" type="email" required>
+    <button>Salvează</button>
+  </form>
+  <button id="toggleTheme" style="margin-left:1em;">🌙/☀️</button>
+</header>
+
+
+<main>
+  <aside id="sidebar"></aside>
+  <section id="content">Selectează un capitol…</section>
+</main>
+
+
+<script type="module">
+/* ===== CONFIG ===== */
+const LANG = {
+  select_ch:'Selectează un capitol…',
+  saved:'Salvat',
+  pdf:'PDF',
+  video:'VIDEO',
+  timer:'Timp',
+  next:'Următoarea întrebare',
+  back:'Înapoi',
+  choose:'⚠️ Alege un răspuns!',
+  ok:'✔️ Corect!',
+  nok:'❌ Incorect. Corect:',
+  summary_title:'Fișă de evaluare',
+  user:'Utilizator',
+  email:'Email',
+  date:'Data completării',
+  duration:'Durata',
+  correct:'Corecte',
+  incorrect:'Incorecte',
+  score:'Scor',
+  result:'Rezultat',
+  admitted:'Admis',
+  rejected:'Respins',
+  reset:'Reset'
+};
+
+const STRUCTURE = {
+  'Anul 1':['Capitolul 1','Capitolul 2','Capitolul 3'],
+  'Anul 2':['Capitolul 1','Capitolul 2','Capitolul 3']
+};
+
+const QUIZZES = {};
+Object.entries(STRUCTURE).forEach(([y,arr])=>{
+  QUIZZES[y]={};
+  arr.forEach(c=>QUIZZES[y][c]={q:[],idx:0,score:0,res:[]});
+});
+
+/* sample questions */
+QUIZZES['Anul 1']['Capitolul 1'].q = [
+  {t:'Ce caracteristică reflectă reacții diferite?',o:['Este organizat','Este dinamic','Este unic'],a:'Este unic',e:'Unicitatea produce reacții diferite.'},
+  {t:'Metoda care presupune urmărirea comportamentului?',o:['Convorbirea','Observația','Ancheta'],a:'Observația',e:'Observația = urmărirea comportamentului.'},
+  {t:'Tulburare senzorială?',o:['Amnezie','Halucinație','Abulie'],a:'Halucinație',e:'Halucinație = percepție falsă.'},
+  {t:'Proces care reține informații?',o:['Gândirea','Imaginația','Memoria'],a:'Memoria',e:'Memoria stochează și redă informații.'},
+  {t:'Motivația din convingere personală?',o:['Extrinsecă','Pasivă','Intrinsecă'],a:'Intrinsecă',e:'Motivația internă = intrinsecă.'},
+  {t:'Emoție de scurtă durată?',o:['Respectul','Furia','Iubirea'],a:'Furia',e:'Furia este intensă și trecătoare.'},
+  {t:'Prima etapă în structura voinței?',o:['Decizia','Susținerea efortului','Alegerea scopului'],a:'Alegerea scopului',e:'Acțiunea începe cu stabilirea scopului.'},
+  {t:'Capacitatea de concentrare activă?',o:['Memorie','Atenție','Percepție'],a:'Atenție',e:'Atenția = concentrare selectivă.'},
+  {t:'Tulburare de gândire din exemplu?',o:['Pacientul spune că medicul e robot','Uită ziua','Nu recunoaște ceașca'],a:'Pacientul spune că medicul e robot',e:'Delir = tulburare de gândire.'},
+  {t:'Pierderea exprimării verbale?',o:['Hipoprosexie','Afazie','Agnozie'],a:'Afazie',e:'Afazia afectează limbajul.'}
+];
+
+QUIZZES['Anul 1']['Capitolul 2'].q = [
+  {t:'Ce caracteristică reflectă reacții diferite?',o:['Este organizat','Este dinamic','Este unic'],a:'Este unic',e:'Unicitatea produce reacții diferite.'},
+  {t:'Metoda care presupune urmărirea comportamentului?',o:['Convorbirea','Observația','Ancheta'],a:'Observația',e:'Observația = urmărirea comportamentului.'},
+  {t:'Tulburare senzorială?',o:['Amnezie','Halucinație','Abulie'],a:'Halucinație',e:'Halucinație = percepție falsă.'},
+  {t:'Proces care reține informații?',o:['Gândirea','Imaginația','Memoria'],a:'Memoria',e:'Memoria stochează și redă informații.'},
+  {t:'Motivația din convingere personală?',o:['Extrinsecă','Pasivă','Intrinsecă'],a:'Intrinsecă',e:'Motivația internă = intrinsecă.'},
+  {t:'Emoție de scurtă durată?',o:['Respectul','Furia','Iubirea'],a:'Furia',e:'Furia este intensă și trecătoare.'},
+  {t:'Prima etapă în structura voinței?',o:['Decizia','Susținerea efortului','Alegerea scopului'],a:'Alegerea scopului',e:'Acțiunea începe cu stabilirea scopului.'},
+  {t:'Capacitatea de concentrare activă?',o:['Memorie','Atenție','Percepție'],a:'Atenție',e:'Atenția = concentrare selectivă.'},
+  {t:'Tulburare de gândire din exemplu?',o:['Pacientul spune că medicul e robot','Uită ziua','Nu recunoaște ceașca'],a:'Pacientul spune că medicul e robot',e:'Delir = tulburare de gândire.'},
+  {t:'Pierderea exprimării verbale?',o:['Hipoprosexie','Afazie','Agnozie'],a:'Afazie',e:'Afazia afectează limbajul.'}
+];
+
+/* ===== STATE ===== */
+let currentTab='teorie', currentYear=null, currentChap=null;
+let timer=0, timerID=null, questions=[], qIndex=0;
+
+/* ===== UTILS ===== */
+const $ = sel=>document.querySelector(sel);
+const $$ = sel=>[...document.querySelectorAll(sel)];
+const fmtTime = s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+/* ===== INIT ===== */
+function buildSidebar(){
+  const sb = $('#sidebar');
+  sb.innerHTML = '';
+  Object.entries(STRUCTURE).forEach(([y, arr]) => {
+    const ydiv = document.createElement('div');
+    ydiv.className = 'year';
+
+    ydiv.innerHTML = `
+      <div class="year-header" tabindex="0">
+        <span class="arrow">▶</span>
+        <h3>${y}</h3>
+      </div>
+      <div class="chapters" style="display:none"></div>
+    `;
+    const chaptersDiv = ydiv.querySelector('.chapters');
+    arr.forEach(c => {
+      const capDiv = document.createElement('div');
+      capDiv.className = 'chapter';
+      const capitolTitle = CHAPTER_TITLES[y]?.[c] || '';
+      capDiv.innerHTML = `
+        <div class="chapter-title">${c}</div>
+        ${capitolTitle ? `<div class="chapter-desc" style="font-size:.93em;color:#888;margin-bottom:.2em">${capitolTitle}</div>` : ''}
+        <div class="chapter-menu">
+          <div class="chapter-group">
+            <span class="chapter-label">Noțiuni teoretice</span>
+          </div>
+          <div class="chapter-sub">
+            <label>
+              <input type="radio" name="media-${y}-${c}" value="pdf" data-type="teorie" data-media="pdf">
+              PDF
+            </label>
+            <label>
+              <input type="radio" name="media-${y}-${c}" value="video" data-type="teorie" data-media="video">
+              Video
+            </label>
+          </div>
+          <a href="#" data-type="chestionar">Chestionar</a>
+          <a href="#" data-type="progres">Fișa personală de evaluare </a>
+        </div>
+      `;
+      capDiv.dataset.year = y;
+      capDiv.dataset.chap = c;
+      chaptersDiv.appendChild(capDiv);
+    });
+    sb.appendChild(ydiv);
+  });
+
+  // Dropdown logic pentru ani
+  $$('.year-header').forEach(header => {
+    header.onclick = () => {
+      const parent = header.parentElement;
+      const chapters = parent.querySelector('.chapters');
+      const arrow = header.querySelector('.arrow');
+      const expanded = chapters.style.display === 'block';
+      chapters.style.display = expanded ? 'none' : 'block';
+      arrow.textContent = expanded ? '▶' : '▼';
+    };
+    header.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') header.click();
+    };
+  });
+
+  // Navigare logică pentru radio și linkuri
+  $$('.chapter-menu input[type="radio"]').forEach(radio => {
+    radio.onchange = e => {
+      const chapterDiv = radio.closest('.chapter');
+      $$('.chapter').forEach(x=>x.classList.remove('active'));
+      chapterDiv.classList.add('active');
+      currentYear = chapterDiv.dataset.year;
+      currentChap = chapterDiv.dataset.chap;
+      renderTheory($('#content'));
+      if(radio.dataset.media === 'pdf') showPDF();
+      else if(radio.dataset.media === 'video') showVideo();
+    };
+  });
+  $$('.chapter-menu a').forEach(link => {
+    link.onclick = e => {
+      e.preventDefault();
+      // Verificare pentru Chestionar și Progres
+      if(link.dataset.type === 'chestionar' || link.dataset.type === 'progres') {
+        const prenume = $('#prenume').value.trim();
+        const nume = $('#nume').value.trim();
+        const email = $('#email').value.trim();
+        if(!prenume || !nume || !email) {
+          alert('Te rugăm să completezi Prenume, Nume și Email înainte de a accesa această secțiune.');
+          return;
+        }
+      }
+      const chapterDiv = link.closest('.chapter');
+      $$('.chapter').forEach(x=>x.classList.remove('active'));
+      chapterDiv.classList.add('active');
+      currentYear = chapterDiv.dataset.year;
+      currentChap = chapterDiv.dataset.chap;
+      if(link.dataset.type === 'chestionar') {
+        renderQuiz($('#content'));
+      } else if(link.dataset.type === 'progres') {
+        renderProgress($('#content'));
+      }
+    };
+  });
+
+  // Mesaj inițial dacă nu e selectat nimic
+  $('#content').innerHTML = `<p style="font-size:1.2em;color:#888;text-align:center;margin-top:3em">
+    Selectează un an și un capitol din stânga pentru a începe.
+  </p>`;
+}
+
+/* ===== RENDER ===== */
+function render(){
+  $('#summaryPage')?.classList.add('hidden');
+  const c=$('#content');
+  if(!currentChap){ c.innerHTML=`<p>${LANG.select_ch}</p>`; return; }
+
+  if(currentTab==='teorie') renderTheory(c);
+  else if(currentTab==='chestionar') renderQuiz(c);
+  else renderProgress(c);
+}
+
+function renderTheory(box){
+  box.innerHTML=`
+    <div style="margin-bottom:.5em;display:none" id="pdfNav">
+      <button id="prevPageBtn">⬅️</button>
+      <span id="pdfPageInfo"></span>
+      <button id="nextPageBtn">➡️</button>
+    </div>
+    <canvas id="pdfViewer"></canvas>
+    <video id="videoViewer" controls style="max-width:100%"></video>`;
+  $('#videoViewer').src=`${currentYear}_${currentChap}.mp4`;
+}
+
+function renderQuiz(box){
+  // setează întrebările pentru capitolul curent
+  questions = QUIZZES[currentYear][currentChap].q;
+  qIndex = 0;
+  box.innerHTML = `
+    <h2>Chestionar ${currentYear} – ${currentChap}</h2>
+    <div id="progressBar"><div id="progressFill"></div></div>
+    <div id="quizPages"></div>
+    <div style="margin-top:1em">
+      <button id="backBtn" style="display:none">${LANG.back}</button>
+      <button id="nextBtn">${LANG.next}</button>
+    </div>
+    <div style="margin-top:.7em;font-size:.95em;color:var(--clr-accent)">
+      <span id="infoTimer">00:00</span>
+    </div>
+  `;
+  buildQuestionPages();
+  updateProgress();
+  $('#backBtn').style.display = qIndex ? 'inline-block' : 'none';
+  startTimer(); // <--- PORNEȘTE TIMERUL
+}
+
+function buildQuestionPages(){
+  const cont=$('#quizPages'); cont.innerHTML='';
+  questions.forEach((q,i)=>{
+    const div=document.createElement('div');
+    div.className='question-page'+(i===0?' active':'');
+    div.innerHTML=`
+      <p><strong>Întrebarea ${i+1} / ${questions.length}</strong><br>${q.t}</p>
+      ${q.o.map(o=>`<label><input type="radio" name="q${i}" value="${o}"> ${o}</label><br>`).join('')}
+      <div id="feed${i}" class="result-inline"></div>`;
+    cont.appendChild(div);
+  });
+}
+
+function startTimer(){
+  timer=0;
+  timerID=setInterval(()=>{
+    timer++;
+    $('#infoTimer').textContent=fmtTime(timer);
+  },1000);
+}
+
+function renderProgress(box){
+  const capitolTitle = CHAPTER_TITLES[currentYear]?.[currentChap] || '';
+  box.innerHTML = `
+    <div class="frame">
+      <h2 style="margin-bottom:.3em">${currentChap}${capitolTitle ? ' – <span style="font-weight:400;color:#888">'+capitolTitle+'</span>' : ''}</h2>
+      <h3 style="margin-bottom:1em;">Fișă personală de evaluare</h3>
+      <form id="progresForm">
+        <label style="display:block;margin-bottom:.7em;">
+          <span>1. Am parcurs materialul teoretic?</span><br>
+          <select name="teorie" required>
+            <option value="">Alege...</option>
+            <option>Da, complet</option>
+            <option>Parțial</option>
+            <option>Nu</option>
+          </select>
+        </label>
+        <label style="display:block;margin-bottom:.7em;">
+          <span>2. Am vizionat materialul video?</span><br>
+          <select name="video" required>
+            <option value="">Alege...</option>
+            <option>Da, complet</option>
+            <option>Parțial</option>
+            <option>Nu</option>
+          </select>
+        </label>
+        <label style="display:block;margin-bottom:.7em;">
+          <span>3. Am completat chestionarul?</span><br>
+          <select name="quiz" required>
+            <option value="">Alege...</option>
+            <option>Da</option>
+            <option>Nu</option>
+          </select>
+        </label>
+        <label style="display:block;margin-bottom:.7em;">
+          <span>Observații personale:</span><br>
+          <textarea name="obs" style="width:100%;height:80px;" placeholder="Scrie aici observațiile tale..."></textarea>
+        </label>
+        <button type="submit">Salvează fișa</button>
+      </form>
+      <div id="progresMsg" style="margin-top:1em;color:var(--clr-main);font-weight:500;"></div>
+    </div>
+  `;
+
+  $('#progresForm').onsubmit = function(e){
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(this).entries());
+    // Construiește afișarea fișei
+    const fisaHTML = `
+      <div class="frame" style="margin-top:1.5em;background:#eaf6ff;">
+        <h3>Fișa personală completată</h3>
+        <ul style="list-style:none;padding:0;font-size:1.08em;">
+          <li><strong>1. Am parcurs materialul teoretic?</strong> <span style="color:var(--clr-main)">${data.teorie}</span></li>
+          <li><strong>2. Am vizionat materialul video?</strong> <span style="color:var(--clr-main)">${data.video}</span></li>
+          <li><strong>3. Am completat chestionarul?</strong> <span style="color:var(--clr-main)">${data.quiz}</span></li>
+          <li><strong>Observații personale:</strong><br>
+            <span style="color:#444;white-space:pre-line">${data.obs ? data.obs : '-'}</span>
+          </li>
+        </ul>
+      </div>
+    `;
+    $('#progresMsg').innerHTML = `<span style="color:var(--clr-main);font-weight:500;">Fișa a fost salvată!</span>` + fisaHTML;
+    this.reset();
+  };
+}
+
+/* ===== EVENTS ===== */
+function delegate(){
+  /* sidebar */
+  $('#sidebar').addEventListener('click',e=>{
+    if(!e.target.classList.contains('chapter')) return;
+    $$('.chapter').forEach(x=>x.classList.remove('active'));
+    e.target.classList.add('active');
+    currentYear=e.target.dataset.year;
+    currentChap=e.target.dataset.chap;
+    render();
+  });
+
+  /* tabs */
+  $$('.tab-btn').forEach(b=>b.onclick=()=>{
+    $$('.tab-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    currentTab=b.dataset.tab;
+    render();
+  });
+
+  /* form */
+  $('#userForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const u=`${$('#prenume').value} ${$('#nume').value}`;
+    sessionStorage.setItem('user',u);
+  });
+
+  /* quiz nav */
+  $('#content').addEventListener('click',e=>{
+    if(e.target.id==='nextBtn') nextQ();
+    if(e.target.id==='backBtn') prevQ();
+  });
+}
+delegate();
+
+/* ===== QUIZ LOGIC ===== */
+function nextQ(){
+  const sel=document.querySelector(`input[name="q${qIndex}"]:checked`);
+  const feed=$(`#feed${qIndex}`);
+  if(!sel){ feed.innerHTML=`<span class="incorrect">${LANG.choose}</span>`; return; }
+  $$(`input[name="q${qIndex}"]`).forEach(r=>r.disabled=true);
+  const q=questions[qIndex];
+  const ok=sel.value===q.a;
+  feed.innerHTML=ok
+    ?`<span class="correct">${LANG.ok}</span>`
+    :`<span class="incorrect">${LANG.nok} <strong>${q.a}</strong><br><em>${q.e}</em></span>`;
+  ok? $('#snd-ok').play():$('#snd-nok').play();
+  $('#backBtn').style.display='inline-block';
+
+  if(qIndex===questions.length-1){ setTimeout(showSummary,1200); return; }
+  setTimeout(()=>{
+    $$('.question-page')[qIndex].classList.remove('active');
+    qIndex++;
+    $$('.question-page')[qIndex].classList.add('active');
+    updateProgress();
+  },1200);
+}
+function prevQ(){
+  if(qIndex>0){
+    $$('.question-page')[qIndex].classList.remove('active');
+    qIndex--;
+    $$('.question-page')[qIndex].classList.add('active');
+    updateProgress();
+    $('#backBtn').style.display=qIndex?'inline-block':'none';
+  }
+}
+function updateProgress(){
+  $('#progressFill').style.width=(qIndex/questions.length*100)+'%';
+}
+
+/* ===== SUMMARY ===== */
+function showSummary(){
+  clearInterval(timerID);
+  const user=sessionStorage.getItem('user')||'';
+  const email=$('#email').value||'';
+  const dur=fmtTime(timer);
+  const data=new Date().toLocaleString();
+  let correct=0;
+  const rows=questions.map((q,i)=>{
+    const ans=document.querySelector(`input[name="q${i}"]:checked`)?.value||'';
+    const ok=ans===q.a;
+    if(ok) correct++;
+    return `
+      <tr>
+        <td>${i+1}</td>
+        <td>${q.t}</td>
+        <td>${ans}</td>
+        <td>${q.a}</td>
+        <td style="color:${ok?'var(--clr-accent)':'var(--clr-error)'}">${ok?'✔️':'❌'}</td>
+      </tr>`;
+  }).join('');
+  const total=questions.length;
+  const pct=Math.round(correct/total*100);
+  const verdict=pct>=80?LANG.admitted:LANG.rejected;
+  $('#content').innerHTML=`
+    <div class="frame">
+      <h3>${LANG.summary_title}</h3>
+      <p><strong>${LANG.user}:</strong> ${user}</p>
+      <p><strong>${LANG.email}:</strong> ${email}</p>
+      <p><strong>${LANG.date}:</strong> ${data}</p>
+      <p><strong>${LANG.duration}:</strong> ${dur}</p>
+      <p><strong>${LANG.correct}:</strong> ${correct}</p>
+      <p><strong>${LANG.incorrect}:</strong> ${total-correct}</p>
+      <p><strong>${LANG.score}:</strong> ${correct}/${total} (${pct}%)</p>
+      <p><strong>${LANG.result}:</strong> ${verdict}</p>
+      <table>
+        <thead><tr><th>#</th><th>Întrebare</th><th>Răspuns</th><th>Corect</th><th>Statut</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <button onclick="location.reload()">${LANG.reset}</button>
+    </div>`;
+}
+
+/* ===== MEDIA UTILS ===== */
+let pdfDoc = null, pdfPageNum = 1, pdfTotalPages = 1;
+
+window.showPDF = () => {
+  $$('#pdfViewer,#videoViewer').forEach(el => el.style.display = 'none');
+  $('#pdfViewer').style.display = 'block';
+  $('#pdfNav').style.display = 'flex';
+  const url = `${currentYear.replaceAll(' ','_')}_${currentChap.replaceAll(' ','_')}.pdf`;
+  if(window.pdfjsLib) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+  pdfPageNum = 1;
+  window.pdfjsLib.getDocument(url).promise.then(pdf => {
+    pdfDoc = pdf;
+    pdfTotalPages = pdf.numPages;
+    renderPDFPage(pdfPageNum);
+    updatePDFNav();
+  }).catch(e => {
+    alert('Eroare la încărcarea PDF-ului:\n' + e.message);
+    $('#pdfNav').style.display = 'none';
+  });
+};
+
+function renderPDFPage(num) {
+  pdfDoc.getPage(num).then(page => {
+    const scale = 1.5;
+    const viewport = page.getViewport({ scale });
+    const canvas = $('#pdfViewer');
+    const ctx = canvas.getContext('2d');
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+    page.render({ canvasContext: ctx, viewport });
+    updatePDFNav();
+  });
+}
+
+function updatePDFNav() {
+  $('#pdfPageInfo').textContent = `Pagina ${pdfPageNum} / ${pdfTotalPages}`;
+  $('#prevPageBtn').disabled = pdfPageNum <= 1;
+  $('#nextPageBtn').disabled = pdfPageNum >= pdfTotalPages;
+}
+
+document.addEventListener('click', e => {
+  if (e.target.id === 'prevPageBtn' && pdfPageNum > 1) {
+    pdfPageNum--;
+    renderPDFPage(pdfPageNum);
+  }
+  if (e.target.id === 'nextPageBtn' && pdfPageNum < pdfTotalPages) {
+    pdfPageNum++;
+    renderPDFPage(pdfPageNum);
+  }
+});
+
+window.onload = () => {
+  buildSidebar();
+};
+
+window.showVideo = () => {
+  $$('#pdfViewer,#videoViewer').forEach(el => el.style.display = 'none');
+  $('#videoViewer').style.display = 'block';
+  // Poți adăuga și un fallback dacă fișierul nu există
+};
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const themes = {
+    light: {
+      '--clr-bg': '#f0f4f7',
+      '--clr-text': '#333',
+      '--clr-main': '#589edf',
+      '--clr-accent': '#040505',
+      '--clr-error': '#d62828'
+    },
+    dark: {
+      '--clr-bg': '#23272f',
+      '--clr-text': '#e0e6ed',
+      '--clr-main': '#4f8cc9',
+      '--clr-accent': '#b3cdfa',
+      '--clr-error': '#e57373'
+    }
+  };
+
+  let theme = localStorage.getItem('theme') || 'dark';
+  applyTheme(theme);
+
+  document.getElementById('toggleTheme').onclick = () => {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    applyTheme(theme);
+    localStorage.setItem('theme', theme);
+  };
+
+  function applyTheme(t) {
+    Object.entries(themes[t]).forEach(([k, v]) =>
+      document.documentElement.style.setProperty(k, v)
+    );
+    document.body.classList.toggle('dark', t === 'dark');
+  }
+});
+</script>
+<script>
+const CHAPTER_TITLES = {
+  'Anul 1': {
+    'Capitolul 1': 'Noţiuni de psihologie, etică şi deontologie medicală',
+    'Capitolul 2': 'Titlu Capitolul 2 Anul 1',
+    'Capitolul 3': 'Titlu Capitolul 3 Anul 1'
+  },
+  'Anul 2': {
+    'Capitolul 1': 'Titlu Capitolul 1 Anul 2',
+    'Capitolul 2': 'Titlu Capitolul 2 Anul 2',
+    'Capitolul 3': 'Titlu Capitolul 3 Anul 2'
+  }
+};
+</script>
+</body>
+</html>

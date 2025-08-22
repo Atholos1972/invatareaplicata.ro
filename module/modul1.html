@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <title>Modul 1 – Asistent medical balneofiziokinetoterapie şi recuperare-Anul 1</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="icon" href="data:,"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    :root {
+      --clr-main: #589edf;
+      --clr-accent: #1976d2;
+      --clr-bg: #f0f4f7;
+      --clr-bg-dark: #23272f;
+      --clr-text: #333;
+      --clr-error: #d62828;
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(89,158,223,0.13);
+      --font: 'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--clr-bg);
+      color: var(--clr-text);
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em 2em;
+      background: var(--clr-main);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+    header h1 {
+      font-size: 1.5em;
+      margin: 0 1em;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    header form {
+      display: flex;
+      gap: .5em;
+      flex-wrap: wrap;
+    }
+    header input {
+      padding: .5em;
+      border-radius: var(--radius);
+      border: none;
+      font-size: 1em;
+      background: #fff;
+      color: var(--clr-text);
+      box-shadow: 0 1px 4px #b3cdfa33;
+    }
+    header button {
+      background: var(--clr-accent);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: .5em 1.2em;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    header button:hover {
+      background: #1565c0;
+      transform: translateY(-2px);
+    }
+    main {
+      display: flex;
+      gap: 2em;
+      padding: 2em;
+      max-width: 1200px;
+      margin: auto;
+    }
+    aside#sidebar {
+      width: 320px;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5em 1em;
+      min-height: 500px;
+    }
+    .chapter {
+      margin-bottom: 1.2em;
+    }
+    .chapter-title {
+      font-weight: 700;
+      font-size: 1.15em;
+      color: var(--clr-main);
+      margin-bottom: .3em;
+      cursor: pointer;
+      padding: .4em .7em;
+      border-radius: var(--radius);
+      transition: background .2s;
+    }
+    .chapter-title:hover {
+      background: #eaf6ff;
+    }
+    .chapter.active > .chapter-title {
+      background: var(--clr-accent);
+      color: #fff;
+    }
+    .chapter-menu {
+      display: flex;
+      flex-direction: column;
+      gap: .5em;
+      margin-left: .7em;
+      margin-top: .3em;
+    }
+    .media-btn {
+      background: #eaf6ff;
+      color: var(--clr-accent);
+      border: 2px solid var(--clr-accent);
+      font-weight: 600;
+      font-size: 1em;
+      padding: .6em 1.2em;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: background .2s, color .2s, border .2s, transform .2s;
+      cursor: pointer;
+    }
+    .media-btn:hover, .media-btn.active {
+      background: var(--clr-accent);
+      color: #fff;
+      border-color: var(--clr-accent);
+      transform: translateY(-2px) scale(1.04);
+    }
+    section#content {
+      flex: 1;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2em 2em 2em 2em;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+    }
+    .frame {
+      background: #f8fbff;
+      padding: 2em;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 900px;
+      margin: 2em auto;
+    }
+    .hidden { display: none; }
+    @media (max-width: 900px) {
+      main { flex-direction: column; gap: 1em; padding: 1em; }
+      aside#sidebar { width: 100%; min-height: unset; }
+      section#content { padding: 1em; }
+    }
+    @media (max-width: 600px) {
+      header { flex-direction: column; gap: 1em; padding: 1em; }
+      main { padding: .5em; }
+      .frame { padding: 1em; }
+    }
+    .pdf-btn {
+      background: #fff0f0 !important;
+      border-color: #d62828 !important;
+    }
+    .pdf-btn:hover {
+      background: #d62828 !important;
+      color: #fff !important;
+    }
+    .mp4-btn {
+      background: #e8f5e9 !important;
+      border-color: #388e3c !important;
+    }
+    .mp4-btn:hover {
+      background: #388e3c !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <button onclick="location.href='../Index.html'">⟵ Înapoi la Index</button>
+  <h1>Modul 1 – Asistent medical balneofiziokinetoterapie şi recuperare - Anul 1</h1>
+  <form id="userForm">
+    <input id="prenume" placeholder="Prenume" required>
+    <input id="nume"   placeholder="Nume"   required>
+    <input id="email"  placeholder="Email" type="email" required>
+    <button>Salvează</button>
+  </form>
+  <button id="toggleTheme">🌙/☀️</button>
+</header>
+<main>
+  <aside id="sidebar"></aside>
+  <section id="content">Selectează un capitol…</section>
+</main>
+<audio id="snd-ok" src="" preload="auto"></audio>
+<audio id="snd-nok" src="" preload="auto"></audio>
+<script type="module">
+// ===== CONFIG =====
+const LANG = {
+  select_ch:'Selectează un capitol…',
+  saved:'Salvat',
+  pdf:'PDF',
+  video:'VIDEO',
+  timer:'Timp',
+  next:'Următoarea întrebare',
+  back:'Înapoi',
+  choose:'⚠️ Alege un răspuns!',
+  ok:'✔️ Corect!',
+  nok:'❌ Incorect. Corect:',
+  summary_title:'Fișă de evaluare',
+  user:'Utilizator',
+  email:'Email',
+  date:'Data completării',
+  duration:'Durata',
+  correct:'Corecte',
+  incorrect:'Incorecte',
+  score:'Scor',
+  result:'Rezultat',
+  admitted:'Admis',
+  rejected:'Respins',
+  reset:'Reset'
+};
+const STRUCTURE = [
+  {
+    name: 'Capitolul 1',
+    options: [
+      'Structură și obiective',
+      'Teorie',
+      'Aplicabilitate',
+      'Chestionar',
+      'Fișa personală de evaluare'
+    ]
+  },
+  {
+    name: 'Capitolul 2',
+    options: [
+      'Structură și obiective',
+      'Teorie',
+      'Aplicabilitate',
+      'Chestionar',
+      'Fișa personală de evaluare'
+    ]
+  },
+  {
+    name: 'Capitolul 3',
+    options: [
+      'Structură și obiective',
+      'Teorie',
+      'Aplicabilitate',
+      'Chestionar',
+      'Fișa personală de evaluare'
+    ]
+  }
+];
+let currentChap=null, currentOpt=null, currentType=null;
+let timer=0, timerID=null, questions=[], qIndex=0;
+let answers = [];
+const $ = sel=>document.querySelector(sel);
+const $$ = sel=>[...document.querySelectorAll(sel)];
+const fmtTime = s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+function buildSidebar(){
+  const sb = $('#sidebar');
+  sb.innerHTML = '';
+  STRUCTURE.forEach(chap => {
+    const capDiv = document.createElement('div');
+    capDiv.className = 'chapter';
+    capDiv.innerHTML = `
+      <div class="chapter-title">${chap.name}</div>
+      <div class="chapter-menu" style="display:none;flex-direction:column;gap:.5em;margin-top:.5em;">
+        ${chap.options.map(opt => {
+          if(opt === 'Structură și obiective') {
+            return `
+              <div style='display:flex;flex-direction:column;gap:.3em;'>
+                <button class='media-btn struct-btn' data-chap="${chap.name}" data-opt="Structură și obiective">Structură și obiective</button>
+                <div style='display:flex;gap:.5em;margin-left:1.2em;'>
+                  <button class="media-btn pdf-btn" data-chap="${chap.name}" data-opt="Structură și obiective" data-type="pdf"><span style='color:#d62828;font-weight:bold;'>📄 PDF</span></button>
+                  <button class="media-btn mp4-btn" data-chap="${chap.name}" data-opt="Structură și obiective" data-type="mp4"><span style='color:#388e3c;font-weight:bold;'>🎬 MP4</span></button>
+                </div>
+              </div>
+            `;
+          } else {
+            return `<button class="media-btn" data-chap="${chap.name}" data-opt="${opt}">${opt}</button>`;
+          }
+        }).join('')}
+      </div>
+    `;
+    sb.appendChild(capDiv);
+  });
+  $$('.chapter-title').forEach(title => {
+    title.onclick = () => {
+      $$('.chapter').forEach(x=>x.classList.remove('active'));
+      $$('.chapter-menu').forEach(menu=>menu.style.display='none');
+      const chapterDiv = title.closest('.chapter');
+      chapterDiv.classList.add('active');
+      chapterDiv.querySelector('.chapter-menu').style.display = 'flex';
+    };
+  });
+  setTimeout(() => {
+    $$('.media-btn').forEach(btn => {
+      if(btn.classList.contains('struct-btn')) return; // ignoră butonul principal
+      btn.onclick = (e) => {
+        currentChap = btn.dataset.chap;
+        currentOpt = btn.dataset.opt;
+        currentType = btn.dataset.type || null;
+        render();
+      };
+    });
+  }, 0);
+  $('#content').innerHTML = `<p style="font-size:1.2em;color:#888;text-align:center;margin-top:3em">Selectează un capitol și o opțiune din stânga pentru a începe.</p>`;
+}
+function render(){
+  $('#summaryPage')?.classList.add('hidden');
+  const c=$('#content');
+  if(!currentOpt || !currentChap){ c.innerHTML=`<p>${LANG.select_ch}</p>`; return; }
+  if(currentOpt === 'Structură și obiective') {
+    if(currentType === 'pdf') {
+      renderPDF(c, currentChap);
+    } else if(currentType === 'mp4') {
+      renderVideo(c, currentChap, currentOpt);
+    } else {
+      c.innerHTML = `<p>Selectează PDF sau MP4.</p>`;
+    }
+  } else if(currentOpt === 'Teorie' || currentOpt === 'Aplicabilitate') {
+    renderVideo(c, currentChap, currentOpt);
+  } else if(currentOpt === 'Chestionar') {
+    renderQuiz(c, currentChap);
+  } else if(currentOpt === 'Fișa personală de evaluare') {
+    renderProgress(c, currentChap);
+  } else {
+    c.innerHTML = `<p>Opțiune necunoscută.</p>`;
+  }
+}
+function renderVideo(box, chap, opt){
+  const capitolNr = chap.match(/\d+/)?.[0] || '1';
+  let fileName = '';
+  if(opt === 'Structură și obiective') {
+    fileName = `Modul_1_Capitolul_${capitolNr}_Structura.mp4`;
+  } else if(opt === 'Teorie') {
+    fileName = `Modul_1_Capitolul_${capitolNr}_Teorie.mp4`;
+  } else if(opt === 'Aplicabilitate') {
+    fileName = `Modul_1_Capitolul_${capitolNr}_Aplicabilitate.mp4`;
+  }
+  var videoPath = `../module/files/${fileName}`;
+  box.innerHTML = `
+    <h2>${chap} – ${opt}</h2>
+    <video id="videoViewer" controls style="width:100%;max-width:900px;display:block;margin:auto;border-radius:8px;background:#000;">
+      <source src="${videoPath}" type="video/mp4">
+      Browserul nu poate reda acest video.
+    </video>
+    <p style="margin-top:1em;color:#888">La selecția acestei opțiuni se va deschide fișierul <b>${fileName}</b></p>
+  `;
+}
+function renderPDF(box, chap) {
+  const capitolNr = chap.match(/\d+/)?.[0] || '1';
+  const fileName = `Modul_1_Capitolul_${capitolNr}_Structura.pdf`;
+  box.innerHTML = `
+    <h2>${chap} – Structură și obiective (PDF)</h2>
+    <div id="pdfNav" style="margin:1em auto 1.5em auto; display:flex; justify-content:center; align-items:center; gap:1em; background:#eaf6ff; border-radius:8px; box-shadow:0 2px 8px #b3cdfa33; padding:.7em 1.5em; max-width:700px;">
+      <button id="prevPageBtn" style="font-size:1.3em; background:#fff; color:#1976d2; border:2px solid #1976d2; border-radius:6px; padding:.3em 1em; cursor:pointer;">⬅️</button>
+      <span id="pdfPageInfo" style="font-size:1.1em; font-weight:600; color:#1976d2;"></span>
+      <button id="nextPageBtn" style="font-size:1.3em; background:#fff; color:#1976d2; border:2px solid #1976d2; border-radius:6px; padding:.3em 1em; cursor:pointer;">➡️</button>
+    </div>
+    <div style="display:flex; justify-content:center;">
+      <canvas id="pdfViewer" style="background:#fff; border-radius:8px; box-shadow:0 2px 12px #b3cdfa33; margin-bottom:2em; max-width:100%;"></canvas>
+    </div>
+    <p style="margin-top:1em;color:#888">La selecția acestei opțiuni se va deschide fișierul <b>${fileName}</b></p>
+  `;
+  setTimeout(() => {
+    const url = `../module/files/${fileName}`;
+    let pdfDoc = null,
+        pageNum = 1,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 1.2,
+        canvas = document.getElementById('pdfViewer'),
+        ctx = canvas.getContext('2d');
+    function renderPage(num) {
+      pageRendering = true;
+      pdfDoc.getPage(num).then(function(page) {
+        let viewport = page.getViewport({ scale: scale });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        let renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        let renderTask = page.render(renderContext);
+        renderTask.promise.then(function() {
+          pageRendering = false;
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+        document.getElementById('pdfPageInfo').textContent = `Pagina ${num} / ${pdfDoc.numPages}`;
+      });
+    }
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+    function onPrevPage() {
+      if (pageNum <= 1) return;
+      pageNum--;
+      queueRenderPage(pageNum);
+    }
+    function onNextPage() {
+      if (pageNum >= pdfDoc.numPages) return;
+      pageNum++;
+      queueRenderPage(pageNum);
+    }
+    document.getElementById('prevPageBtn').addEventListener('click', onPrevPage);
+    document.getElementById('nextPageBtn').addEventListener('click', onNextPage);
+    if(window.pdfjsLib) {
+      window.pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+        pdfDoc = pdfDoc_;
+        document.getElementById('pdfPageInfo').textContent = `Pagina 1 / ${pdfDoc.numPages}`;
+        renderPage(pageNum);
+      });
+    }
+  }, 0);
+}
+const FISA_QUESTIONS = {
+  'Capitolul 1': [
+    'Înțeleg structura și caracteristicile sistemului psihic uman și pot explica diferența dintre psihologia generală și psihologia medicală.',
+    'Cunosc și pot aplica metodele de bază ale psihologiei (observație, interviu, anamneză etc.) în activitatea medicală.',
+    'Pot identifica reacții și comportamente psihice ale pacienților și le notez corect în fișa de observație.',
+    'Mă implic empatic în relația cu pacienții și colaborez eficient cu echipa medicală în sprijinul acestora.',
+    'Recunosc procesele senzoriale și pot semnala tulburări precum halucinații, iluzii sau agnozie.',
+    'Identific corect procesele cognitive superioare (gândire, memorie, atenție etc.) și posibilele tulburări asociate.',
+    'Adaptez comunicarea și comportamentul în funcție de starea emoțională și cognitivă a pacientului.',
+    'Înțeleg importanța motivației, afectivității, voinței și atenției în comportamentul uman și în practica medicală.',
+    'Sunt capabil(ă) să observ și să interpretez reacții precum demotivarea, impulsivitatea sau dificultățile de concentrare.',
+    'Îmi evaluez în mod sincer capacitatea de concentrare, motivația și autocontrolul în timpul stagiului clinic.'
+  ],
+  'Capitolul 2': [
+    'Înțeleg ce sunt serviciile medicale și pot descrie componentele sistemului de sănătate.',
+    'Cunosc rolul și responsabilitățile asistentului medical în diferite tipuri de unități sanitare.',
+    'Identific corect nevoile fundamentale ale pacientului și știu să le corelez cu intervenții specifice.',
+    'Aplic în mod corespunzător tehnici de igienă, mobilizare, alimentație și eliminare, respectând siguranța pacientului.',
+    'Monitorizez semnele vitale și înregistrez corect datele în fișa de observație.',
+    'Cunosc căile de administrare a medicamentelor și pot explica avantajele și riscurile fiecăreia.',
+    'Respect pașii de administrare a tratamentelor și urmăresc reacțiile pacientului după administrare.',
+    'Aplic corect procedurile de recoltare a probelor biologice și respect regulile de igienă și etichetare.',
+    'Pregătesc pacientul corespunzător înaintea tratamentului și comunic eficient în toate etapele.',
+    'Supraveghez pacientul în timpul tratamentului și știu cum să acționez în caz de reacții adverse.'
+  ],
+  'Capitolul 3': [
+    'Pot recunoaște și diferenția tipurile de tuse, dispnee și expectorație, în funcție de afecțiunea respiratorie.',
+    'Asociez simptomele caracteristice fiecărei boli respiratorii (ex: pleurezie, astm, tuberculoză) și știu când trebuie alertat personalul medical.',
+    'Monitorizez corect T.A., pulsul, respirația și notez în fișa pacientului modificările relevante.',
+    'Identific simptomele specifice bolilor cardiovasculare și le corelez cu afecțiuni precum cardiopatia ischemică sau insuficiența cardiacă.',
+    'Recunosc semnele digestive importante (icter, vărsături, diaree) și le notez obiectiv în fișa de observație.',
+    'Aplic măsuri de îngrijire potrivite pacientului cu dificultăți respiratorii (poziționare, oxigen, calmare).',
+    'Respect regulile de igienă și protecție la contactul cu pacienți cu boli contagioase sau digestive.',
+    'Colaborez eficient cu echipa medicală, semnalând orice agravare a stării pacientului.',
+    'Ofer sprijin fizic și emoțional pacienților cu afecțiuni cronice sau simptomatologie severă.',
+    'Mă adaptez situațiilor clinice și sprijin pacientul în alimentație, hidratare și menținerea confortului.'
+  ]
+};
+function renderProgress(box){
+  const fisaQuestions = FISA_QUESTIONS[currentChap] || [
+    `${currentChap}: Întrebare 1 fișă?`,
+    `${currentChap}: Întrebare 2 fișă?`
+  ];
+  box.innerHTML = `
+    <div class="frame">
+      <h2 style="margin-bottom:.3em">Fișa personală de evaluare – ${currentChap}</h2>
+      <form id="progresForm">
+        <table style="width:100%;border-collapse:collapse;margin-bottom:1em;">
+          <thead>
+            <tr style="background:#eaf6ff;">
+              <th style="padding:.5em;border:1px solid #b3cdfa;">Completează bifa corespunzătoare pentru fiecare activitate:</th>
+              <th style="padding:.5em;border:1px solid #b3cdfa;">Da</th>
+              <th style="padding:.5em;border:1px solid #b3cdfa;">Parțial</th>
+              <th style="padding:.5em;border:1px solid #b3cdfa;">Nu</th>
+              <th style="padding:.5em;border:1px solid #b3cdfa;">Observații (max 50 caractere)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${fisaQuestions.map((q, i) => `
+              <tr>
+                <td style="padding:.5em;border:1px solid #b3cdfa;">${q}</td>
+                <td style="text-align:center;border:1px solid #b3cdfa;"><input type="radio" name="q${i}" value="Da" required></td>
+                <td style="text-align:center;border:1px solid #b3cdfa;"><input type="radio" name="q${i}" value="Parțial"></td>
+                <td style="text-align:center;border:1px solid #b3cdfa;"><input type="radio" name="q${i}" value="Nu"></td>
+                <td style="border:1px solid #b3cdfa;"><input type="text" name="obs${i}" maxlength="50" style="width:98%;padding:.3em;border-radius:4px;border:1px solid #b3cdfa;"></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <button type="submit">Salvează fișa</button>
+      </form>
+      <div id="progresMsg" style="margin-top:1em;color:var(--clr-main);font-weight:500;"></div>
+      <button id="redoFisaBtn" style="display:none;margin-top:1.5em;background:#fff;color:var(--clr-main);border:2px solid var(--clr-main);font-weight:600;padding:.6em 1.2em;border-radius:6px;">Completează din nou</button>
+      <div id="fisaModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);z-index:1000;align-items:center;justify-content:center;">
+        <div style="background:#fff;color:#222;padding:2em 2.5em;border-radius:12px;max-width:700px;width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.18);position:relative;">
+          <button id="closeFisaModal" style="position:absolute;top:1em;right:1em;font-size:1.3em;background:none;border:none;color:#888;cursor:pointer;">&times;</button>
+          <div id="fisaModalContent"></div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('progresForm').onsubmit = function(e){
+    e.preventDefault();
+    const data = {};
+    const prenume = document.getElementById('prenume')?.value || '';
+    const nume = document.getElementById('nume')?.value || '';
+    const email = document.getElementById('email')?.value || '';
+    fisaQuestions.forEach((q, i) => {
+      const radios = this.querySelectorAll('input[name="q'+i+'"]');
+      let selected = '';
+      radios.forEach(r => { if(r.checked) selected = r.value; });
+      data['q'+i] = selected;
+      data['obs'+i] = this['obs'+i].value;
+    });
+    const fisaHTML = `
+      <div style="margin-bottom:1em;font-size:1.08em;">
+        <strong>Nume:</strong> <span style="color:var(--clr-main)">${nume}</span> &nbsp; 
+        <strong>Prenume:</strong> <span style="color:var(--clr-main)">${prenume}</span> &nbsp; 
+        <strong>Email:</strong> <span style="color:var(--clr-main)">${email}</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="background:#b3cdfa;">
+            <th style="padding:.5em;border:1px solid #b3cdfa;">Întrebare</th>
+            <th style="padding:.5em;border:1px solid #b3cdfa;">Răspuns</th>
+            <th style="padding:.5em;border:1px solid #b3cdfa;">Observații</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${fisaQuestions.map((q, i) => `
+            <tr>
+              <td style="padding:.5em;border:1px solid #b3cdfa;">${q}</td>
+              <td style="text-align:center;border:1px solid #b3cdfa;">${data['q'+i]}</td>
+              <td style="border:1px solid #b3cdfa;">${data['obs'+i] ? data['obs'+i] : '-'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+    document.getElementById('fisaModalContent').innerHTML = "<h3 style='margin-top:0'>Fișa personală completată</h3>" + fisaHTML;
+    document.getElementById('fisaModal').style.display = 'flex';
+    document.getElementById('redoFisaBtn').style.display = 'inline-block';
+    document.getElementById('progresMsg').innerHTML = '<span style="color:var(--clr-main);font-weight:500;">Fișa a fost salvată!</span>';
+    Array.from(this.querySelectorAll('input, button')).forEach(el => el.disabled = true);
+    document.getElementById('closeFisaModal').onclick = function() {
+      document.getElementById('fisaModal').style.display = 'none';
+    };
+    document.getElementById('redoFisaBtn').onclick = function() {
+      document.getElementById('progresForm').reset();
+      Array.from(document.getElementById('progresForm').querySelectorAll('input, button')).forEach(el => el.disabled = false);
+      document.getElementById('progresForm').style.display = '';
+      document.getElementById('fisaModal').style.display = 'none';
+      document.getElementById('redoFisaBtn').style.display = 'none';
+      document.getElementById('progresMsg').innerHTML = '';
+    };
+  };
+}
+// ===== QUIZZES STRUCTURE =====
+const QUIZZES = {};
+STRUCTURE.forEach(chapObj => {
+  QUIZZES[chapObj.name] = { q: [], idx: 0, score: 0, res: [] };
+});
+QUIZZES['Capitolul 1'].q = [
+  {
+    t:'Ce caracteristică a sistemului psihic reflectă faptul că fiecare persoană reacționează diferit la aceeași situație?',
+    o:['Este organizat','Este dinamic','Este unic','Este voluntar'],
+    a:'Este unic',
+    e:'Fiecare individ reacționează diferit deoarece sistemul psihic este unic.'
+  },
+  {
+    t:'Metoda care presupune urmărirea comportamentului?',
+    o:['Convorbirea','Observația','Ancheta','Psihometria'],
+    a:'Observația',
+    e:'Observația presupune urmărirea atentă a comportamentului pacientului.'
+  },
+  {
+    t:'Care dintre următoarele este o tulburare senzorială?',
+    o:['Amnezie','Halucinație','Abulie','Afazie'],
+    a:'Halucinație',
+    e:'Halucinația este o percepție falsă, o tulburare senzorială.'
+  },
+  {
+    t:'Ce proces psihic superior permite reținerea și redarea informațiilor?',
+    o:['Gândirea','Imaginația','Memoria','Atenția'],
+    a:'Memoria',
+    e:'Memoria este responsabilă de stocarea și reamintirea informațiilor.'
+  },
+  {
+    t:'Ce tip de motivație vine din dorința de a face un lucru din convingere personală?',
+    o:['Extrinsecă','Pasivă','Activă','Intrinsecă'],
+    a:'Intrinsecă',
+    e:'Motivația intrinsecă vine din interior, fără influențe externe.'
+  },
+  {
+    t:'Ce emoție este un exemplu de manifestare afectivă de scurtă durată?',
+    o:['Respectul','Furia','Iubirea','Depresia'],
+    a:'Furia',
+    e:'Furia este o emoție intensă, dar de scurtă durată.'
+  },
+  {
+    t:'Care este prima etapă în structura voinței?',
+    o:['Decizia','Susținerea efortului','Finalizarea acțiunii','Alegerea scopului'],
+    a:'Alegerea scopului',
+    e:'Orice acțiune voluntară începe cu alegerea unui scop'
+  },
+  {
+    t:'Cum se numește capacitatea de a te concentra activ asupra unui obiect?',
+    o:['Memorie','Imaginație','Atenție','Percepție'],
+    a:'Atenție',
+    e:'Atenția presupune orientarea și menținerea conștientă a concentrării.'
+  },
+  {
+    t:'Ce exemplu din practică indică o posibilă tulburare de gândire?',
+    o:['Pacientul spune că medicul e robot extraterestru','Pacientul uită ce zi este','Pacientul nu recunoaște o ceașcă de ceai','Pacientul repetă întrebarea de mai multe ori'],
+    a:'Pacientul spune că medicul e robot extraterestru',
+    e:'Delirul este o tulburare de gândire – afirmația indică delir'
+  },
+  {
+    t:'Ce tulburare se manifestă prin pierderea capacității de exprimare verbală?',
+    o:['Hipoprosexie','Anhedonie','Afazie','Agnozie'],
+    a:'Afazie',
+    e:'Afazia afectează exprimarea și înțelegerea limbajului verbal.'
+  }
+];
+QUIZZES['Capitolul 2'].q = [
+  {
+    t:'Ce reprezintă serviciile medicale?',
+    o:['Activități de recreere pentru pacienți','Intervenții chirurgicale de urgență','Activități organizate pentru menținerea și îmbunătățirea sănătății','Transportul pacienților între spitale'],
+    a:'Activități organizate pentru menținerea și îmbunătățirea sănătății',
+    e:'Serviciile medicale sunt definite ca activități organizate pentru menținerea, restabilirea sau îmbunătățirea stării de sănătate.'
+  },
+  {
+    t:'Care este rolul asistentului medical în echipa de îngrijire?',
+    o:['Prescrierea tratamentelor','Aplicarea tehnicilor de bază și monitorizarea pacientului','Eliberarea de bilete de trimitere','Întocmirea fișei de internare'],
+    a:'Aplicarea tehnicilor de bază și monitorizarea pacientului',
+    e:'Asistentul medical are rolul de a aplica tehnici de îngrijire, de a supraveghea pacientul și de a susține comunicarea în echipă.'
+  },
+  {
+    t:'Care dintre următoarele reprezintă o nevoie fundamentale?',
+    o:['Nevoia de a socializa online','Nevoia de a respecta un regim estetic','Nevoia de a respira și de a avea o circulație adecvată','Nevoia de a citi zilnic'],
+    a:'Nevoia de a respira și de a avea o circulație adecvată',
+    e:'Respirația și circulația sunt nevoi fiziologice fundamentale esențiale pentru viață.'
+  },
+  {
+    t:'Care este cea mai frecventă cale de administrare a medicamentelor?',
+    o:['Rectală','Intravenoasă','Orală','Inhalatorie'],
+    a:'Orală',
+    e:'Calea orală este cea mai simplă și frecvent utilizată metodă de administrare a medicamentelor.'
+  },
+  {
+    t:'Ce presupune recoltarea corectă a urinei pentru urocultură?',
+    o:['Se colectează în orice recipient curat','Se recoltează fără igienă prealabilă','Se recoltează mijlocul jetului urinar într-un recipient steril','Se adaugă apă pentru volum'],
+    a:'Se recoltează mijlocul jetului urinar într-un recipient steril',
+    e:'Pentru urocultură, se recoltează mijlocul jetului urinar într-un recipient steril, după igienă locală.'
+  },
+  {
+    t:'Ce trebuie făcut în cazul apariției unei reacții adverse în timpul unei perfuzii?',
+    o:['Se continuă perfuzia până la final','Se ignoră și se monitorizează pacientul ulterior','Se oprește perfuzia și se anunță personalul medical','Se administrează calmante fără prescripție'],
+    a:'Se oprește perfuzia și se anunță personalul medical',
+    e:'În caz de reacție adversă, se oprește perfuzia imediat și se informează personalul medical responsabil.'
+  },
+  {
+    t:'Ce înseamnă supravegherea pacientului în timpul tratamentului?',
+    o:['A verifica doar dacă pacientul a luat tratamentul','A urmări reacțiile pacientului și a evalua semnele vitale','A discuta cu familia pacientului','A colecta fișa pacientului după tratament'],
+    a:'A urmări reacțiile pacientului și a evalua semnele vitale',
+    e:'Supravegherea presupune observarea continuă a pacientului și evaluarea semnelor vitale în timpul tratamentului.'
+  },
+  {
+    t:'Ce include notarea corectă a reacțiilor pacientului în fișa de tratament?',
+    o:['Opinia personală despre pacient','Simptome observate și acțiuni întreprinse','Date personale ale asistentului','Comentarii despre rudele pacientului'],
+    a:'Simptome observate și acțiuni întreprinse',
+    e:'Notarea corectă presupune menționarea obiectivă a reacțiilor pacientului și a măsurilor luate.'
+  },
+  {
+    t:'Ce se utilizează pentru recoltarea sputei la pacient?',
+    o:['Recipient nesteril, după ce pacientul a mâncat','Recipient steril, dimineața pe nemâncate','Orice pahar curat','Recipient de urină'],
+    a:'Recipient steril, dimineața pe nemâncate',
+    e:'Sputa se recoltează dimineața, pe nemâncate, într-un recipient steril, pentru a evita contaminarea.'
+  },
+  {
+    t:'Ce principiu se aplică în administrarea medicamentelor injectabile?',
+    o:['Administrarea se face fără a anunța pacientul','Se ignoră reacțiile locale','Se respectă doza, calea și ora indicată de prescripție','Se administrează în funcție de preferințele pacientului'],
+    a:'Se respectă doza, calea și ora indicată de prescripție',
+    e:'Respectarea prescripției medicului – doză, oră, cale – este fundamentală în administrarea medicamentelor injectabile.'
+  }
+];
+QUIZZES['Capitolul 3'].q = [
+  {
+    t:'Care dintre următoarele simptome este specific astmului bronșic?',
+    o:['Durere toracică accentuată la inspirație','Tuse productivă cu febră mare','Tuse seacă, dispnee și wheezing','Hemoptizie și icter'],
+    a:'Tuse seacă, dispnee și wheezing',
+    e:'Tusea seacă, dispneea și wheezing-ul sunt caracteristice crizei de astm bronșic.'
+  },
+  {
+    t:'Ce simptom diferențiază tuberculoza de celelalte boli respiratorii?',
+    o:['Wheezing','Tuse productivă cu secreții purulente','Tuse persistentă cu hemoptizie și transpirații nocturne','Durere toracică la inspirație'],
+    a:'Tuse persistentă cu hemoptizie și transpirații nocturne',
+    e:'Tuberculoza se manifestă prin tuse cronică, hemoptizie, scădere ponderală și transpirații nocturne.'
+  },
+  {
+    t:'Ce măsură este indicată în îngrijirea pacientului cu pleurezie?',
+    o:['Mobilizare frecventă','Poziție clinostatică','Poziție semisezândă și repaus','Exerciții respiratorii active'],
+    a:'Poziție semisezândă și repaus',
+    e:'Poziția semisezândă ajută la reducerea disconfortului și îmbunătățirea respirației.'
+  },
+  {
+    t:'Care este combinația tipică de simptome în insuficiența cardiacă?',
+    o:['Durere toracică și hipertensiune','Dispnee, edeme gambiere și fatigabilitate','Palpitații și amețeli','Tuse uscată și febră'],
+    a:'Dispnee, edeme gambiere și fatigabilitate',
+    e:'Dispneea, edemele și oboseala sunt semne clasice de insuficiență cardiacă.'
+  },
+  {
+    t:'Ce simptom este specific unui episod de angină pectorală?',
+    o:['Dispnee severă la repaus','Durere toracică constrictivă la efort','Tuse productivă cu febră','Palpitații cu sincopă'],
+    a:'Durere toracică constrictivă la efort',
+    e:'Angina pectorală se manifestă prin durere toracică de tip constrictiv, declanșată la efort.'
+  },
+  {
+    t:'Ce simptom este semn de agravare în pancreatită acută?',
+    o:['Greață după masă','Durere epigastrică ușoară','Durere intensă în bară și vărsături persistente','Balonare moderată'],
+    a:'Durere intensă în bară și vărsături persistente',
+    e:'Pancreatita acută se manifestă prin durere abdominală severă, vărsături și semne de alterare a stării generale.'
+  },
+  {
+    t:'Ce simptom este sugestiv pentru hepatită virală?',
+    o:['Tuse persistentă și febră','Icter, urină închisă la culoare și inapetență','Durere în hipogastru și diaree','Hemoptizie și febră'],
+    a:'Icter, urină închisă la culoare și inapetență',
+    e:'Hepatita virală se manifestă prin icter, urină hipercromă și stare generală alterată.'
+  },
+  {
+    t:'Ce măsură este adecvată în îngrijirea pacientului cu sindrom diareic?',
+    o:['Mobilizare imediată','Administrarea de aliment solid','Rehidratare și monitorizarea scaunelor','Exerciții fizice zilnice'],
+    a:'Rehidratare și monitorizarea scaunelor',
+    e:'În sindromul diareic, prioritare sunt hidratarea și observarea frecvenței scaunelor.'
+  },
+  {
+    t:'Ce manifestare necesită alertarea imediată a echipei medicale?',
+    o:['Tuse uscată intermitentă','Scăderea apetitului','Hemoptizie și dificultăți respiratorii','Durere ușoară la nivel epigastric'],
+    a:'Hemoptizie și dificultăți respiratorii',
+    e:'Hemoptizia și dispneea severă pot indica o urgență medicală (ex. tuberculoză activă sau embolism).'
+  },
+  {
+    t:'Ce simptom diferă între gastrită și hepatită?',
+    o:['Greața','Durerea epigastrică','Icterul','Vărsăturile'],
+    a:'Icterul',
+    e:'Icterul este caracteristic hepatitei, nu apare în gastrită.'
+  }
+];
+
+function renderQuiz(box, chap) {
+  questions = QUIZZES[chap]?.q || [];
+  qIndex = 0;
+  answers = Array(questions.length).fill(null);
+  box.innerHTML = `
+    <h2>Chestionar – ${chap}</h2>
+    <div id="progressBar"><div id="progressFill"></div></div>
+    <div id="quizPages"></div>
+    <div style="margin-top:1em">
+      <button id="backBtn" style="display:none">${LANG.back}</button>
+      <button id="nextBtn">${LANG.next}</button>
+    </div>
+    <div style="margin-top:.7em;font-size:.95em;color:var(--clr-accent)"><span id="infoTimer">00:00</span></div>
+  `;
+  showQuestionPage(qIndex);
+  updateProgress();
+}
+function showQuestionPage(i){
+  const q = questions[i];
+  const cont = $('#quizPages');
+  cont.innerHTML = `
+    <p><strong>Întrebarea ${i+1} / ${questions.length}</strong><br>${q.t}</p>
+    ${q.o.map(o=>`<label><input type=\"radio\" name=\"q${i}\" value=\"${o}\"> ${o}</label><br>`).join('')}
+    <div id=\"feed${i}\" class=\"result-inline\"></div>
+  `;
+  $('#backBtn').style.display = i ? 'inline-block' : 'none';
+  const nextBtn = $('#nextBtn');
+  nextBtn.textContent = i < questions.length-1 ? LANG.next : 'Finalizare';
+  nextBtn.disabled = answers[i] ? false : true;
+  // Preselectează răspunsul anterior dacă există
+  if(answers[i]) {
+    const inp = cont.querySelector(`input[name="q${i}"][value="${answers[i]}"]`);
+    if(inp) inp.checked = true;
+    // Afișează feedback
+    const feed = $('#feed'+i);
+    if(answers[i] === q.a) {
+      feed.innerHTML = '<span style="color:green;font-weight:bold">CORECT</span>';
+    } else {
+      feed.innerHTML = `<span style=\"color:red;font-weight:bold\">INCORECT</span> <span style=\"color:#444\">Răspuns corect: <b>${q.a}</b></span><br><span style=\"color:#1976d2;font-size:.98em\"><em>${q.e}</em></span>`;
+    }
+    cont.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.disabled = true);
+  }
+  // Feedback instant cu salvare răspuns
+  cont.querySelectorAll(`input[name="q${i}"]`).forEach(inp => {
+    inp.onclick = function() {
+      answers[i] = this.value;
+      const feed = $('#feed'+i);
+      if(this.value === q.a) {
+        feed.innerHTML = '<span style="color:green;font-weight:bold">CORECT</span>';
+      } else {
+        feed.innerHTML = `<span style=\"color:red;font-weight:bold\">INCORECT</span> <span style=\"color:#444\">Răspuns corect: <b>${q.a}</b></span><br><span style=\"color:#1976d2;font-size:.98em\"><em>${q.e}</em></span>`;
+      }
+      cont.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.disabled = true);
+      nextBtn.disabled = false;
+    };
+  });
+  // La click pe [Înapoi], dezactivează opțiunile
+  $('#backBtn').onclick = () => {
+    if(i>0){
+      qIndex--;
+      showQuestionPage(qIndex);
+      updateProgress();
+      $('#quizPages').querySelectorAll(`input[name="q${qIndex}"]`).forEach(r => r.disabled = true);
+      $('#nextBtn').disabled = answers[qIndex] ? false : true;
+    }
+  };
+  // La click pe [Următoarea întrebare] sau [Finalizare]
+  nextBtn.onclick = () => {
+    if(i < questions.length-1){
+      qIndex++;
+      showQuestionPage(qIndex);
+      updateProgress();
+    } else {
+      showSummary();
+    }
+  };
+}
+function startTimer(){
+  timer=0;
+  timerID=setInterval(()=>{
+    timer++;
+    $('#infoTimer').textContent=fmtTime(timer);
+  },1000);
+}
+function nextQ(idx) {
+  const sel = document.querySelector(`input[name="q${idx}"]:checked`);
+  const feed = $(`#feed${idx}`);
+  if (!sel) { feed.innerHTML = `<span class="incorrect">${LANG.choose}</span>`; return; }
+  $$(`input[name="q${idx}"]`).forEach(r => r.disabled = true);
+  const q = questions[idx];
+  const ok = sel.value === q.a;
+  feed.innerHTML = ok
+    ? `<span class="correct">${LANG.ok}</span>`
+    : `<span class="incorrect">${LANG.nok} <strong>${q.a}</strong><br><em>${q.e}</em></span>`;
+  ok ? $('#snd-ok').play() : $('#snd-nok').play();
+  $$('#backBtn')[idx].style.display = 'inline-block';
+  if (idx === questions.length - 1) { setTimeout(showSummary, 1200); return; }
+  setTimeout(() => {
+    $$('.question-page')[idx].classList.remove('active');
+    $$('.question-page')[idx].style.display = 'none';
+    $$('.question-page')[idx + 1].classList.add('active');
+    $$('.question-page')[idx + 1].style.display = '';
+    qIndex = idx + 1;
+    updateProgress();
+  }, 1200);
+}
+function prevQ(idx) {
+  if (idx > 0) {
+    $$('.question-page')[idx].classList.remove('active');
+    $$('.question-page')[idx].style.display = 'none';
+    $$('.question-page')[idx - 1].classList.add('active');
+    $$('.question-page')[idx - 1].style.display = '';
+    qIndex = idx - 1;
+    updateProgress();
+    $$('#backBtn')[idx - 1].style.display = qIndex ? 'inline-block' : 'none';
+  }
+}
+function updateProgress() {
+  $('#progressFill').style.width = ((qIndex + 1) / questions.length * 100) + '%';
+}
+function showSummary(){
+  clearInterval(timerID);
+  const user=sessionStorage.getItem('user')||($('#prenume').value+' '+$('#nume').value)||'';
+  const email=$('#email').value||'';
+  const dur=fmtTime(timer);
+  const data=new Date().toLocaleString();
+  let correct=0;
+  let total=questions.length;
+  let pct=0;
+  let rows=questions.map((q,i)=>{
+    const ans=answers[i]||'';
+    const ok=ans===q.a;
+    if(ok) correct++;
+    return `
+      <tr>
+        <td>${i+1}</td>
+        <td>${q.t}</td>
+        <td style="color:${ok?'green':'red'}">${ans||'-'}</td>
+        <td>${q.a}</td>
+        <td>${ok?'✔️':'❌'}</td>
+      </tr>`;
+  }).join('');
+  pct=Math.round(correct/total*100);
+  const verdict=pct>=80?LANG.admitted:LANG.rejected;
+  $('#content').innerHTML=`
+    <div class="frame">
+      <h3>Fișă personalizată – Rezultate chestionar</h3>
+      <div style="margin-bottom:1em;font-size:1.08em;">
+        <strong>Nume:</strong> <span style="color:var(--clr-main)">${user}</span> &nbsp; 
+        <strong>Email:</strong> <span style="color:var(--clr-main)">${email}</span> &nbsp; 
+        <strong>Data:</strong> <span style="color:var(--clr-main)">${data}</span> &nbsp; 
+        <strong>Durata:</strong> <span style="color:var(--clr-main)">${dur}</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:1em;">
+        <thead>
+          <tr style="background:#eaf6ff;">
+            <th style="padding:.5em;border:1px solid #b3cdfa;">#</th>
+            <th style="padding:.5em;border:1px solid #b3cdfa;">Întrebare</th>
+            <th style="padding:.5em;border:1px solid #b3cdfa;">Răspuns dat</th>
+            <th style="padding:.5em;border:1px solid #b3cdfa;">Răspuns corect</th>
+            <th style="padding:.5em;border:1px solid #b3cdfa;">Statut</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div style="font-size:1.1em;margin-bottom:1em;"><strong>Punctaj:</strong> ${correct} / ${total} (${pct}%)</div>
+      <div style="font-size:1.1em;margin-bottom:1em;"><strong>Rezultat:</strong> <span style="color:${verdict==LANG.admitted?'green':'red'}">${verdict}</span></div>
+      <button onclick="location.reload()">${LANG.reset}</button>
+    </div>`;
+}
+
+window.onload = buildSidebar;
+</script>
+</body>
+</html>

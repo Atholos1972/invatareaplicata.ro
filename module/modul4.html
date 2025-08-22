@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Modul 4 – Vânzător</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #e67e22;
+      --accent: #f6b93b;
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(230,126,34,.12);
+      font-family: system-ui, sans-serif;
+    }
+    body { background: #fff8f2; min-height: 100vh; margin: 0; }
+    .top-bar {
+      position: fixed; left: 0; right: 0; top: 0; height: 64px;
+      background: var(--primary); color: #fff; display: flex; align-items: center; z-index: 30;
+      padding: 0 1rem;
+    }
+    .header-title { font-size: 1.5rem; font-weight: bold; letter-spacing: 3px; }
+    .back-btn {
+      background: linear-gradient(135deg, var(--accent), var(--primary)); color: #fff;
+      border: none; border-radius: 30px; padding: .5rem 1.2rem; margin-right: 1.5rem;
+      font-size: 1rem; cursor: pointer; transition: background .3s;
+    }
+    .back-btn:hover { background: linear-gradient(135deg, var(--primary), var(--accent)); }
+    .sidebar {
+      position: fixed; left: 0; top: 64px; bottom: 0; width: 220px; background: var(--primary); color: #fff;
+      display: flex; flex-direction: column; padding: 2rem .7rem; z-index: 20;
+    }
+    .sidebar h2 { font-size: 1.1rem; margin-bottom: 1.2rem; color: var(--accent); }
+    .sidebar nav { flex: 1; }
+    .sidebar a {
+      color: #fff; text-decoration: none; padding: .7rem 1rem; border-radius: 6px; display: block;
+      margin-bottom: .5rem; transition: background .3s;
+    }
+    .sidebar a.active, .sidebar a:hover { background: rgba(246,185,59,.18); }
+    .sidebar .profile { margin-top: auto; border-top: 1px solid rgba(255,255,255,.15); padding: 1rem 0; display: flex; align-items: center; gap: .75rem; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+    .content {
+      margin-left: 220px; padding: 2.5rem 2rem 2rem 2rem; min-height: calc(100vh - 64px);
+    }
+    .modul-title {
+      font-size: 2.2rem; font-weight: 700; color: var(--primary); margin-bottom: 1.2rem; letter-spacing: 2px;
+    }
+    .modul-desc { font-size: 1.15rem; color: #333; margin-bottom: 2rem; }
+    .year-nav { display: flex; gap: 1.2rem; margin-bottom: 2rem; }
+    .year-btn {
+      background: var(--accent); color: #fff; border: none; border-radius: 20px; padding: .5rem 1.2rem;
+      font-size: 1rem; cursor: pointer; transition: background .3s;
+    }
+    .year-btn.active, .year-btn:hover { background: var(--primary); }
+    .chapter-list { display: flex; gap: 1.2rem; margin-bottom: 2rem; }
+    .chapter-btn {
+      background: #fff; color: var(--primary); border: 2px solid var(--accent); border-radius: 20px;
+      padding: .5rem 1.2rem; font-size: 1rem; cursor: pointer; transition: background .3s, color .3s;
+    }
+    .chapter-btn.active, .chapter-btn:hover { background: var(--accent); color: #fff; }
+    .viewer {
+      background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 2rem; margin-bottom: 2rem; min-height: 320px; display: flex; flex-direction: column; align-items: center;
+    }
+    .viewer video { width: 100%; max-width: 600px; border-radius: 12px; margin-bottom: 1.2rem; }
+    .viewer iframe { width: 100%; max-width: 600px; height: 400px; border: none; border-radius: 12px; margin-bottom: 1.2rem; }
+    .viewer .file-actions { display: flex; gap: 1.2rem; margin-top: 1.2rem; }
+    .file-btn {
+      background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; border: none;
+      border-radius: 30px; padding: .5rem 1.2rem; font-size: 1rem; cursor: pointer; transition: background .3s;
+    }
+    .file-btn:hover { background: linear-gradient(135deg, var(--accent), var(--primary)); }
+    @media(max-width:900px){
+      .sidebar{display:none}
+      .content{margin-left:0;padding:1rem}
+      .viewer{padding:1rem}
+    }
+  </style>
+</head>
+<body>
+<header class="top-bar">
+  <button class="back-btn" onclick="location.href='../Index.html'">
+    <i class="fa fa-arrow-left"></i> Înapoi la Index
+  </button>
+  <span class="header-title">Modul 4 – Vânzător</span>
+</header>
+<aside class="sidebar">
+  <h2><i class="fa-solid fa-cash-register"></i> Modul 4</h2>
+  <nav id="yearNav">
+    <a href="#" class="year-btn active" data-year="Anul_I">Anul I</a>
+    <a href="#" class="year-btn" data-year="ANUL_II">Anul II</a>
+  </nav>
+  <div class="profile">
+    <img src="../img/Atholos.png" alt="Avatar" class="avatar">
+    <span>Atholos</span>
+  </div>
+</aside>
+<main class="content">
+  <div class="modul-title">Vânzător</div>
+  <div class="modul-desc">Tehnici de vânzare. Selectează anul și capitolul pentru a vizualiza materialele video și PDF.</div>
+  <div class="year-nav">
+    <button class="year-btn active" data-year="Anul_I">Anul I</button>
+    <button class="year-btn" data-year="ANUL_II">Anul II</button>
+  </div>
+  <div class="chapter-list" id="chapterList"></div>
+  <div class="viewer" id="viewer"></div>
+</main>
+<script>
+const chapters = {
+  'Anul_I': [1,2,3],
+  'ANUL_II': [1,2,3]
+};
+let currentYear = 'Anul_I';
+let currentChapter = 1;
+function renderChapters(){
+  const list = document.getElementById('chapterList');
+  list.innerHTML = chapters[currentYear].map(c=>
+    `<button class="chapter-btn${c===currentChapter?' active':''}" data-chapter="${c}">Capitolul ${c}</button>`
+  ).join('');
+}
+function renderViewer(){
+  const pdfPath = `files/modul4/${currentYear}/pdf/Anul_${currentYear==='Anul_I'?'1':'2'}_Capitolul_${currentChapter}.pdf`;
+  const videoPath = `files/modul4/${currentYear}/mp4/Anul_${currentYear==='Anul_I'?'1':'2'}_Capitolul_${currentChapter}.mp4`;
+  document.getElementById('viewer').innerHTML = `
+    <video controls src="${videoPath}" poster="../img/modul4.jpg"></video>
+    <div class="file-actions">
+      <button class="file-btn" onclick="window.open('${videoPath}','_blank')"><i class='fa fa-play'></i> Deschide video</button>
+      <button class="file-btn" onclick="window.open('${pdfPath}','_blank')"><i class='fa fa-file-pdf'></i> Deschide PDF</button>
+    </div>
+    <iframe src="https://mozilla.github.io/pdf.js/web/viewer.html?file=../${pdfPath}"></iframe>
+  `;
+}
+document.querySelectorAll('.year-btn').forEach(btn=>{
+  btn.onclick = function(){
+    document.querySelectorAll('.year-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    currentYear = this.getAttribute('data-year');
+    currentChapter = 1;
+    renderChapters();
+    renderViewer();
+  };
+});
+document.getElementById('chapterList').onclick = function(e){
+  if(e.target.classList.contains('chapter-btn')){
+    currentChapter = parseInt(e.target.getAttribute('data-chapter'));
+    renderChapters();
+    renderViewer();
+  }
+};
+renderChapters();
+renderViewer();
+</script>
+</body>
+</html>

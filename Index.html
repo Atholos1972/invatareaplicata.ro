@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Platformă educațională – Finală</title>
+
+  <!-- External -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+  <style>
+    @keyframes jump {
+      0%   { transform: translateY(0); }
+      20%  { transform: translateY(-18px); }
+      40%  { transform: translateY(0); }
+      100% { transform: translateY(0); }
+    }
+    .jumping-magenta {
+      color: #d500f9;
+      font-weight: bold;
+      animation: jump 1.2s infinite;
+      display: inline-block;
+      letter-spacing: 2px;
+    }
+    @keyframes fadeColor {
+      0%   { opacity: 0; color: #d500f9; transform: scale(0.7); }
+      40%  { opacity: 1; color: #7c4dff; transform: scale(1.2); }
+      70%  { color: #00bcd4; transform: scale(1); }
+      100% { opacity: 1; color: #222; transform: scale(1); }
+    }
+    .fade-color {
+      font-weight: bold;
+      animation: fadeColor 1.3s cubic-bezier(.7,-0.5,.3,1.5) both;
+      display: inline-block;
+      letter-spacing: 2px;
+    }
+    @keyframes moveXY {
+      0%   { transform: translate(0,0); }
+      20%  { transform: translate(20px,-10px); }
+      40%  { transform: translate(-20px,10px); }
+      60%  { transform: translate(15px,15px); }
+      80%  { transform: translate(-15px,-15px); }
+      100% { transform: translate(0,0); }
+    }
+    .move-xy {
+      display: inline-block;
+      animation: moveXY 2.5s cubic-bezier(.7,-0.5,.3,1.5) infinite;
+      font-weight: bold;
+      color: #222;
+      letter-spacing: 2px;
+    }
+    /* --- ARTICOLE LIST ALTERNANT --- */
+    .articole-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.2rem;
+      margin: 2.5rem auto 2rem auto;
+      max-width: 900px;
+    }
+    .articol-card {
+      display: flex;
+      align-items: stretch;
+      gap: 2rem;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px #004c9922;
+      padding: 1.5rem 1.2rem;
+      min-height: 160px;
+      transition: box-shadow .3s, transform .3s;
+      position: relative;
+    }
+    .articol-card.reverse {
+      flex-direction: row-reverse;
+    }
+    .articol-img {
+      width: 160px;
+      height: 120px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 2px 8px #004c9922;
+      background: #f6f8fa;
+    }
+    .articol-content {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .articol-title {
+      font-size:1.15rem;
+      font-weight:700;
+      color:#004c99;
+      margin-bottom:.5rem;
+      letter-spacing:1px;
+    }
+    .articol-text {
+      font-size:1rem;
+      color:#333;
+      line-height:1.5;
+      margin-bottom:1rem;
+    }
+    @media(max-width:900px){
+      .articole-list{padding-left:0;max-width:100vw;}
+      .articol-card{width:100%;flex-direction:column;text-align:center;gap:1.2rem;}
+      .articol-card.reverse{flex-direction:column;}
+      .articol-img{margin-bottom:1rem;width:100%;height:180px;}
+    }
+    /* --- ALTERNATING CARDS PROJECT --- */
+    .altproj-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      margin: 3rem auto 2rem auto;
+      max-width: 900px;
+    }
+    .altproj-card {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      background: linear-gradient(135deg,#f6f8fa 60%,#e3f0ff 100%);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #004c9922;
+      padding: 2.2rem 2rem;
+      min-height: 180px;
+      transition: box-shadow .3s, transform .3s;
+      position: relative;
+    }
+    .altproj-card:hover {
+      box-shadow: 0 16px 48px #007bff33;
+      transform: scale(1.03);
+    }
+    .altproj-card.reverse {
+      flex-direction: row-reverse;
+    }
+    .altproj-img {
+      width: 140px;
+      height: 140px;
+      border-radius: 16px;
+      object-fit: cover;
+      box-shadow: 0 4px 16px #0001;
+      background: #f6f8fa;
+      border: 3px solid #007bff;
+    }
+    .altproj-content {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .altproj-title {
+      font-size:1.35rem;
+      font-weight:700;
+      color:#004c99;
+      margin-bottom:.7rem;
+      letter-spacing:1px;
+    }
+    .altproj-text {
+      font-size:1.05rem;
+      color:#333;
+      line-height:1.6;
+    }
+    @media(max-width:900px){
+      .altproj-list{padding-left:0;max-width:100vw;}
+      .altproj-card{width:100%;flex-direction:column;text-align:center;gap:1.2rem;}
+      .altproj-card.reverse{flex-direction:column;}
+      .altproj-img{margin-bottom:1rem;}
+    }
+    /* --- TIMELINE PROJECT CARDS --- */
+    .timeline {
+      position: relative;
+      margin: 3rem auto 2rem auto;
+      max-width: 900px;
+      padding-left: 30px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg,#007bff 0%,#004c99 100%);
+      border-radius: 2px;
+      transform: translateX(-50%);
+    }
+    .timeline-card {
+      position: relative;
+      width: 48%;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px #004c9922;
+      margin-bottom: 3rem;
+      padding: 2rem 2rem 2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      min-height: 180px;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .timeline-card:hover {
+      box-shadow: 0 16px 48px #007bff33;
+      transform: scale(1.03);
+    }
+    .timeline-card.left {
+      left: 0;
+      flex-direction: row-reverse;
+      margin-right: 52%;
+    }
+    .timeline-card.right {
+      left: 52%;
+      flex-direction: row;
+      margin-left: 52%;
+    }
+    .timeline-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 16px #0001;
+      border: 4px solid #007bff;
+      background: #f6f8fa;
+    }
+    .timeline-content {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .timeline-title {
+      font-size:1.35rem;
+      font-weight:700;
+      color:#004c99;
+      margin-bottom:.7rem;
+      letter-spacing:1px;
+    }
+    .timeline-text {
+      font-size:1.05rem;
+      color:#333;
+      line-height:1.6;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border: 5px solid #007bff;
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 2px 8px #007bff33;
+    }
+    @media(max-width:900px){
+      .timeline{padding-left:0;max-width:100vw;}
+      .timeline-card{width:100%;margin-left:0;margin-right:0;left:0;flex-direction:column;text-align:center;}
+      .timeline-card.left,.timeline-card.right{margin:0;}
+      .timeline-img{margin-bottom:1rem;}
+      .timeline-dot{left:20px;top:20px;transform:none;}
+      .timeline::before{left:20px;}
+    }
+    :root{
+      --sidebar-w:240px;
+      --primary:#004c99;
+      --accent:#007bff;
+      --radius:12px;
+      --shadow:0 8px 24px rgba(0,0,0,.12);
+      font-family:system-ui, sans-serif;
+    }
+    
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#fafafa;display:flex;min-height:100vh}
+
+    .header-title {
+      font-size: max(1.5rem, 2vw);
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 4px;
+      text-align: right;
+      
+    }
+       
+    /* ---------- SIDEBAR ---------- */
+    .sidebar{
+      position:fixed;inset:0;right:auto;
+      width:var(--sidebar-w);height:100vh;
+      background:var(--primary);color:#fff;
+      display:flex;flex-direction:column;
+      padding:4rem 0.9rem;z-index:20;
+    }
+    .sidebar nav{flex:1}
+    .sidebar a{color:#fff;text-decoration:none;padding:.8rem .8rem 2rem;border-radius:4px;display:block}
+    .sidebar a.active{background:rgba(255,255,255,.2)}
+    .profile{margin-top:auto;border-top:1px solid rgba(255,255,255,.15);padding:1rem 0;display:flex;align-items:center;gap:.75rem}
+    .avatar{width:32px;height:32px;border-radius:50%;object-fit:cover}
+
+    /* Iconița rămâne vizibilă tot timpul */
+  .sidebar a {
+    position: relative;
+    padding-left: 4.0rem; /* spațiu pentru icon */
+    transition: background .3s;
+}
+
+  /* pseudo-icon – nu e acoperit de background */
+  .sidebar a::before {
+    content: var(--icon, '');
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 800;
+    position: absolute;
+    left: .75rem;
+    top: 35%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    color: #fff;
+    z-index: 1; /* mereu deasupra */
+  }
+
+  /* Iconițele pentru fiecare secțiune */
+  .sidebar a[href="#home"]     { --icon: '\f015'; } /* fa-house */
+  .sidebar a[href="#proiect"]  { --icon: '\f15b'; } /* fa-file */
+  .sidebar a[href="#platforma"]{ --icon: '\f07c'; } /* fa-folder-open */
+  .sidebar a[href="#articole"] { --icon: '\f518'; } /* fa-book-open */
+  .sidebar a[href="#mesaje"]   { --icon: '\f4ad'; } /* fa-message */
+  .sidebar a[href="#contact"]  { --icon: '\f2bb'; } /* fa-address-book */
+
+  /* Fundal activ – NU acoperă iconița */
+  .sidebar a.active {
+    background: rgba(255,255,255,.15);
+  }
+
+    @keyframes slide {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-2600px); } /* 10 card-uri × 260px + 9 gap-uri × 2rem ≈ 2600 px */
+    }
+
+    /* ---------- HEADER / FOOTER ---------- */
+    .top-bar,.bottom-bar{
+      position:fixed;left:0;right:0;background:var(--primary);color:#fff;
+      display:flex;align-items:center;z-index:30;
+    }
+    .top-bar{top:0;height:64px;padding:0 1rem 0 calc(var(--sidebar-w) + 1rem)}
+    .logo{height:40px;border-radius:4px}
+    .header-title{margin-left:1rem;font-size:1.35rem;font-weight:600}
+
+    .bottom-bar{bottom:0;justify-content:space-between;padding:.75rem 1rem .75rem calc(var(--sidebar-w) + 1rem);font-size:.9rem}
+    body{padding-top:64px;padding-bottom:64px}
+
+    /* ---------- MAIN ---------- */
+    .content{flex:1;padding:2rem;margin-left:var(--sidebar-w)}
+    .content h1{margin-bottom:1.5rem;color:var(--primary)}
+
+    @media(max-width:767px){
+      .sidebar{display:none}
+      .content{margin-left:0}
+      .top-bar,.bottom-bar{padding-left:1rem}
+    }
+
+    /* ---------- CARDS ---------- */
+    .proj-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+    .proj-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 1.2rem;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: box-shadow .3s, transform .3s;
+      padding: 1.5rem 1rem;
+      min-height: 180px;
+      position: relative;
+      max-width: 700px;
+    }
+    .proj-row:hover {
+      box-shadow: 0 12px 32px #004c9922;
+      transform: translateY(-6px) scale(1.01);
+    }
+    .proj-row img {
+      width: 180px;
+      max-width: 100%;
+      border-radius: 18px;
+      object-fit: cover;
+      box-shadow: 0 4px 16px #0001;
+      margin: auto 0;
+      transition: box-shadow .3s;
+    }
+    .proj-row h3 {
+      color: #007bff;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #007bff22;
+    }
+    .proj-row p {
+      font-size: 1.15rem;
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+    @media(max-width:900px){
+      .proj-row{flex-direction:column;align-items:center;text-align:center;}
+      .proj-row img{margin:0 auto 1.5rem;}
+    }
+    .flip-grid{grid-template-columns:repeat(auto-fit,260px)}
+    .flip-grid {
+      display: grid;
+      gap: 2rem;
+      justify-content: center;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      margin-top: 2rem;
+    }
+    .flip-front.card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px 12px 0 0;
+      background: #f6f8fa;
+      box-shadow: 0 2px 8px #004c9922;
+    }
+
+    .card{
+      background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);
+      overflow:hidden;display:flex;flex-direction:column;transition:.3s
+    }
+    .card img{width:100%;height:200px;object-fit:cover}
+    .card h3{margin:1rem 1rem .5rem;font-size:1.15rem;color:var(--primary)}
+    .card p{padding:0 1rem 1rem;font-size:.9rem;color:#555;flex:1}
+    .btn{
+      align-self:flex-start;margin:0 1rem 1.5rem;padding:.5rem 1.2rem;
+      background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border-radius:30px;text-decoration:none
+    }
+
+    /* ---------- FLIP ---------- */
+    .flip-card{perspective:1000px}
+    .flip-inner{
+      position:relative;width:240px;height:280px;transition:transform .6s;transform-style:preserve-3d
+    }
+    .flip-card:hover .flip-inner{transform:rotateY(180deg)}
+    .flip-front,.flip-back{
+      position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);background:#fff
+    }
+    .flip-back{transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;padding:1.5rem}
+    .flip-back a{margin-top:1rem}
+
+    /* ---------- SWIPER ---------- */
+    .swiper-container{position:relative;width:100%;height:460px;padding:2rem 0}
+    @media (min-width: 768px) {
+      .swiper-container {
+        margin-left: var(--sidebar-w);
+        width: auto;
+        max-width: 960px;
+        margin-right: auto;
+      }
+    }
+    .logo { text-align: center; font-size: 2rem; margin-bottom: 1rem; }
+
+    /* --- ARTICOLE GRID MODERN --- */
+    .articole-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2.2rem;
+      margin: 2.5rem auto 2rem auto;
+      max-width: 900px;
+      justify-items: center;
+    }
+    .articol-grid-card {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 4px 24px #004c9922;
+      padding: 2.2rem 1.2rem 1.5rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow .3s, transform .3s;
+      position: relative;
+      min-height: 320px;
+      cursor: pointer;
+    }
+    .articol-grid-card:hover {
+      box-shadow: 0 12px 32px #007bff33;
+      transform: translateY(-6px) scale(1.04);
+    }
+    .articol-grid-img-wrap {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 2px 12px #004c9922;
+      background: #f6f8fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: box-shadow .3s;
+    }
+    .articol-grid-card:hover .articol-grid-img-wrap {
+      box-shadow: 0 8px 32px #007bff33;
+    }
+    .articol-grid-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      transition: transform .4s;
+    }
+    .articol-grid-card:hover .articol-grid-img {
+      transform: scale(1.08) rotate(-2deg);
+    }
+    .articol-grid-title {
+      font-size:1.18rem;
+      font-weight:700;
+      color:#004c99;
+      margin-bottom:.7rem;
+      letter-spacing:1px;
+      text-align:center;
+    }
+    .articol-grid-text {
+      font-size:1rem;
+      color:#333;
+      line-height:1.5;
+      margin-bottom:1.2rem;
+      text-align:center;
+    }
+    @media(max-width:900px){
+      .articole-grid{padding-left:0;max-width:100vw;grid-template-columns:1fr;}
+      .articol-grid-card{width:100%;min-height:260px;}
+      .articol-grid-img-wrap{width:100px;height:100px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========= HEADER ========= -->
+<header class="top-bar">
+  <div id="header-animated-title" style="width:100%;text-align:left;padding-right:1.5rem;font-size:2.8rem;font-weight:900;letter-spacing:6px;text-transform:uppercase;"></div>
+</header>
+
+<!-- ========= SIDEBAR ========= -->
+<aside class="sidebar">
+  <div class="logo"><i class="fa-solid fa-laptop-file"></i></div>
+  <nav>
+    <ul style="list-style:none">
+      <li><a href="#home" class="active">Acasă</a></li>
+      <li><a href="#proiect">Proiect</a></li>
+      <li><a href="#platforma">Platformă</a></li>
+      <li><a href="#articole">Articole</a></li>
+      <li><a href="#mesaje">Mesaje</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="profile">
+    <img src="img/Atholos.png" alt="Avatar" class="avatar">
+    <span>Atholos</span>
+  </div>
+</aside>
+
+<!-- ========= MAIN ========= -->
+<main class="content" id="content-area"></main>
+
+<!-- ========= FOOTER ========= -->
+<footer class="bottom-bar">
+  <div><i class="fas fa-map-marker-alt"></i> str. Șos. Pantelimon 25, București</div>
+  <div class="footer-right">
+    <i class="fas fa-envelope"></i> xxx@gmail.com<br>
+    <i class="fas fa-phone"></i> 0123.456.789
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script type="module">
+  const DATA = {
+    courses: [
+      {title:'Balneofiziokinetoterapie',desc:'Recuperare medicală.',img:'/img/modul10.jpg'},
+      {title:'Tehnician electrician auto',desc:'Diagnoză sisteme electronice auto.',img:'/img/modul2.jpg'},
+      {title:'Comerciant',desc:'Stocuri și vânzări.',img:'/img/modul3.jpg'},
+      {title:'Vânzător',desc:'Tehnici de vânzare.',img:'/img/modul4.jpg'},
+      {title:'Electrician joasă tensiune',desc:'Instalări și mentenanță.',img:'/img/modul5.jpg'},
+      {title:'Electrician auto',desc:'Circuite auto.',img:'/img/modul6.jpg'},
+      {title:'Analist programator',desc:'Dezvoltare software.',img:'/img/modul7.jpg'},
+      {title:'Administrator rețele',desc:'LAN/WAN.',img:'/img/modul8.jpg'},
+      {title:'Sănătate și asistență',desc:'Prim-ajutor.',img:'/img/modul9.jpg'},
+      {title:'Tehnician activități economice',desc:'Contabilitate, marketing și management.',img:'/img/modul1.webp'}
+      
+    ],
+    articles: [
+      {title:'Rolul educației',desc:'Competențe digitale și gândire critică.',img:'/img/articol1.jpg'},
+      {title:'Ghid stagii',desc:'Pașii esențiali pentru o practică reușită.',img:'/img/articol2.jpg'},
+      {title:'Platforme e-learning',desc:'Coursera, Udemy, Khan Academy – ghid.',img:'/img/articol3.webp'},
+      {title:'Educație la sursă',desc:'Laboratoare reale pentru elevi.'},
+      {title:'Soft-skills',desc:'Comunicare și lucru în echipă.'},
+      {title:'Finanțări și burse',desc:'Erasmus+, burse locale și internship-uri plătite.'}
+    ],
+    testimonials: [
+      {name:'Andrei Popescu',role:'Junior Accountant',quote:'Platforma mi-a schimbat cariera – am învățat exact ce era nevoie pentru primul job!'},
+      {name:'Maria Ionescu',role:'Marketing Specialist',quote:'Suportul mentorilor și laboratoarele reale m-au făcut să mă simt pregătită din prima zi.'},
+      {name:'Radu Georgescu',role:'Electrician Auto',quote:'Am plecat cu certificare și cu job-ul asigurat. Recomand cu încredere!'}
+    ],
+    project: [
+      {title:'Stagii de practică',text:'Participarea la stagii de practică oferă elevilor oportunitatea de a aplica cunoștințele teoretice într-un mediu real de lucru. Aceste stagii sunt concepute pentru a îmbunătăți abilitățile practice și pentru a facilita tranziția spre piața muncii. Elevii vor colabora cu profesioniști din diverse domenii, câștigând experiență și încredere. Fiecare stagiu este personalizat pentru a răspunde nevoilor elevilor și ale angajatorilor, asigurându-se astfel un impact pozitiv asupra viitoarei cariere a fiecăruia. Prin acest proces, elevii devin mai competitivi și mai bine pregătiți pentru provocările viitoare.',img:'img/stagii.png'},
+
+      {title:'Workshop-uri de dezvoltare profesională',text:'Workshop-urile de dezvoltare profesională oferă elevilor oportunități de a învăța prin experiențe interactive. Aceste sesiuni sunt concepute pentru a dezvolta competențe esențiale, cum ar fi comunicarea eficientă, lucrul în echipă și rezolvarea problemelor. Facilitatorii experimentați ghidează participanții prin activități practice, stimulând gândirea critică și creativitatea. Elevii au ocazia să colaboreze și să împărtășească idei, astfel creând o rețea de susținere care va fi benefică în carierele lor viitoare. Aceste workshop-uri contribuie la formarea unui mediu de învățare colaborativ și dinamic.',img:'img/workshop.png'},
+
+      {title:'Sisteme de informare coordonată',text:'Sistemele de informare coordonată sunt esențiale pentru elevi, oferindu-le acces rapid la resurse educaționale și informații relevante. Aceste platforme sunt concepute pentru a facilita învățarea continuă și pentru a sprijini dezvoltarea profesională. Elevii pot naviga ușor prin conținuturi diverse, beneficiind de informații actualizate și de calitate. Prin implementarea unor soluții digitale eficiente, se îmbunătățește comunicarea între profesori și elevi, iar procesele de învățare devin mai eficiente. Acest sistem asigură o integrare perfectă a tehnologiei în educație, pregătind elevii pentru viitor.',img:'img/sisteme.png'},
+
+      {title:'Parteneriate Strategice',text:'Ne concentrăm pe dezvoltarea parteneriatelor strategice pentru a sprijini creșterea profesională și oportunitățile de carieră ale clienților noștri.',img:'img/parteneri.png'}
+    ]
+  };
+
+  const TPL = {
+    home: () => `
+      
+      <div class="home-flex" style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+        <img src="img/title.png" alt="Logo liceu Nikola Tesla" class="home-img" aria-label="Logo Nikola Tesla" style="max-width:700px;border-radius:12px;box-shadow:0 4px 16px #0001">
+        <div style="flex:1;min-width:220px;">
+          <h2 class="home-title" style="text-align:right;font-size:3.0rem;font-weight:bold;color:#004c99;letter-spacing:2px;margin-bottom:1rem">
+            Proiect: Dezvoltarea unui sistem coordonat, integrat si incluziv de educatie si formare pentru piata muncii prin stagii de practica/programe de invatare la locul de munca pentru elevii liceelor tehnologice din Bucuresti -     NIKOLA TESLA si REGINA ELISABETA
+          </h2>
+          <p style="text-align:right;">
+            <span style="font-size:2.2rem;font-weight:900;color:#d500f9;text-shadow:0 2px 12px #d500f955;letter-spacing:3px;">
+              ${(() => {
+                const txt = 'Bine ai venit pe platforma noastră educațională!';
+                return txt.split('').map((ch,i) =>
+                  ch === ' ' ? ' ' : `<span class=\"fade-color\" style=\"animation-delay:${i*0.1}s\">${ch}</span>`
+                ).join('');
+              })()}
+            </span>
+          </p>
+        </div>
+      </div>
+    `,
+    platforma: () => `
+      <h1>Platforma digitală</h1>
+      <div class="swiper-container">
+        <div class="swiper-wrapper">${DATA.courses.map((c,i)=>`
+          <div class="swiper-slide card">
+            <img src="${c.img}" alt="${c.title}">
+            <h3>${c.title}</h3><p>${c.desc}</p>
+            <a href="module/modul${i+1}.html" class="btn">Detalii</a>
+          </div>`).join('')}
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>`,
+    articole: () => `
+      <h1 style="text-align:center;color:#004c99;margin-bottom:2.2rem;font-size:2.1rem;font-weight:700;letter-spacing:1px;">Articole educaționale</h1>
+      <div class="articole-grid" style="gap:2.2rem;">
+        ${DATA.articles.map((a,i)=>{
+          const imgSrc = a.img ? a.img : 'https://via.placeholder.com/180x180?text=Articol';
+          return `
+            <div class="articol-grid-card" style="background:#fff;border-radius:18px;box-shadow:0 2px 12px #004c9911;padding:2.1rem 1.2rem 1.3rem 1.2rem;display:flex;flex-direction:column;align-items:center;min-height:220px;">
+              <div class="articol-grid-img-wrap" style="width:90px;height:90px;margin-bottom:1.1em;background:#f6f8fa;box-shadow:none;">
+                <img src="${imgSrc}" alt="${a.title}" class="articol-grid-img" style="border-radius:50%;width:100%;height:100%;object-fit:cover;">
+              </div>
+              <div class="articol-grid-title" style="font-size:1.13rem;font-weight:600;color:#1976d2;margin-bottom:.6em;text-align:center;">${a.title}</div>
+              <div class="articol-grid-text" style="color:#444;font-size:.98rem;min-height:38px;text-align:center;margin-bottom:1.1em;">${a.desc}</div>
+              <a href="Module/article${i+1}.html" class="btn" style="margin-top:auto;background:#f6f8fa;color:#1976d2;font-weight:600;border-radius:18px;padding:.5em 1.3em;box-shadow:none;transition:background .2s;font-size:.98em;">Citește</a>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <style>
+      .articol-grid-card {
+        box-shadow: 0 2px 12px #004c9911;
+        transition: box-shadow .2s, transform .2s;
+      }
+      .articol-grid-card:hover {
+        box-shadow: 0 8px 24px #1976d211;
+        transform: translateY(-4px) scale(1.02);
+      }
+      .articol-grid-card .btn:hover {
+        background:#e3f0ff;
+        color:#1976d2;
+      }
+      </style>
+    `,
+    proiect: () => `
+      <h1 style="text-align:center;color:#004c99;margin-bottom:2.5rem;font-size:2.5rem;letter-spacing:2px;font-weight:800;text-shadow:0 2px 12px #004c9922">Învățare practică și oportunități</h1>
+      <div class="altproj-list">
+        ${DATA.project.map((p,i)=>{
+          const reverse = i%2!==0 ? 'reverse' : '';
+          return `
+            <div class="altproj-card ${reverse}">
+              <img src="${p.img}" alt="${p.title}" class="altproj-img">
+              <div class="altproj-content">
+                <div class="altproj-title">${p.title}</div>
+                <div class="altproj-text">${p.text}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>`,
+    mesaje: () => `
+      <h1 style="text-align:left;">Ce spun alții despre noi</h1>
+      <div id="testimonial" class="card" style="max-width:600px;margin:2rem auto 2rem 0;text-align:left;padding:2.5rem 2rem;align-items:flex-start;display:flex;flex-direction:column;">
+        <img id="tImg" src="https://picsum.photos/100/100?random=201" alt="" style="border-radius:50%;width:80px;height:80px;object-fit:cover;margin-bottom:1rem;align-self:flex-start;">
+        <p id="tQuote" style="font-style:italic;margin-bottom:1rem;text-align:left;"></p>
+        <h4 id="tName" style="text-align:left;"></h4><span id="tRole" style="text-align:left;"></span>
+        <div style="margin-top:1.5rem;display:flex;gap:1rem;justify-content:flex-start;width:100%;">
+          <button id="tPrev" class="btn" style="width:40px;height:40px;padding:0;border-radius:50%;align-self:flex-start;">‹</button>
+          <button id="tNext" class="btn" style="width:40px;height:40px;padding:0;border-radius:50%;align-self:flex-start;">›</button>
+        </div>
+      </div>`,
+    contact: () => `
+      <h1 style="text-align:left;">Contact</h1>
+      <div class="proj-grid" style="grid-template-columns:repeat(auto-fit,minmax(600px,1fr));max-width:700px;margin-left:0;text-align:left;align-items:flex-start;">
+        <div style="text-align:left;">
+          <h2 style="text-align:left;">Date de contact</h2>
+          <p style="text-align:left;"><i class="fas fa-map-marker-alt"></i> str. Șos. Pantelimon 25, București</p>
+          <p style="text-align:left;"><i class="fas fa-envelope"></i> xxx@gmail.com</p>
+          <p style="text-align:left;"><i class="fas fa-phone"></i> 0123.456.789</p>
+        </div>
+        <form id="contactForm" class="card" style="padding:1.2rem;max-width:320px;width:100%;margin:auto;text-align:left;align-items:flex-start;display:flex;flex-direction:column;">
+          <h3 style="margin-bottom:.7rem;font-size:1.05rem;text-align:left;">Trimite-ne un mesaj</h3>
+          <input name="name" placeholder="Nume complet" required style="width:100%;padding:.45rem .7rem;margin-bottom:.5rem;border:1px solid #ccc;border-radius:20px;font-size:.95rem;text-align:left;">
+          <input type="email" name="email" placeholder="Adresa e-mail" required style="width:100%;padding:.45rem .7rem;margin-bottom:.5rem;border:1px solid #ccc;border-radius:20px;font-size:.95rem;text-align:left;">
+          <textarea name="message" placeholder="Mesajul tău..." rows="3" required style="width:100%;padding:.45rem .7rem;margin-bottom:.5rem;border:1px solid #ccc;border-radius:14px;resize:none;font-size:.95rem;text-align:left;"></textarea>
+          <button type="submit" class="btn" style="padding:.4rem 1.1rem;font-size:.95rem;border-radius:20px;align-self:flex-start;">Trimite</button>
+          <p id="formMsg" style="display:none;margin-top:.4rem;font-size:.95rem;text-align:left;"></p>
+        </form>
+      </div>`
+  };
+
+  const root = document.getElementById('content-area');
+  let swiper = null;
+
+  function render(section){
+    root.innerHTML = TPL[section]();
+    document.querySelectorAll('.sidebar a').forEach(a=>a.classList.toggle('active',a.hash===`#${section}`));
+
+    if (swiper) { swiper.destroy(); swiper = null; }
+
+    if (section === 'platforma'){
+      swiper = new Swiper('.swiper-container',{
+        slidesPerView:3,
+        spaceBetween:24,
+        loop:false,              // nu reia după ultimul slide
+        pagination:{el:'.swiper-pagination',clickable:true},
+        navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'}
+      });
+    }
+    if (section === 'mesaje') initTestimonials();
+    if (section === 'contact') initForm();
+  }
+
+  let current = 0;
+  function showTestimonial(i){
+    const t = DATA.testimonials[i];
+    ['tImg','tName','tRole','tQuote'].forEach(id=>{
+      const el = document.getElementById(id);
+      if (id==='tImg') el.src=`https://picsum.photos/100/100?random=${200+i}`;
+      else el.textContent = t[id.slice(1).toLowerCase()];
+    });
+  }
+  function initTestimonials(){
+    showTestimonial(current);
+    document.getElementById('tNext').onclick = ()=>{current=(current+1)%DATA.testimonials.length;showTestimonial(current)};
+    document.getElementById('tPrev').onclick = ()=>{current=(current-1+DATA.testimonials.length)%DATA.testimonials.length;showTestimonial(current)};
+    setInterval(()=>{current=(current+1)%DATA.testimonials.length;showTestimonial(current)},5000);
+  }
+  function initForm(){
+    const form = document.getElementById('contactForm');
+    const msg  = document.getElementById('formMsg');
+    form.onsubmit = e=>{
+      e.preventDefault();
+      msg.textContent = 'Mesaj trimis! Vă vom răspunde cât mai curând.';
+      msg.style.display = 'block';
+      msg.style.color = '#007bff';
+      form.reset();
+    };
+  }
+
+  // Render animated header title on every page
+  function renderHeaderTitle() {
+    const txt = 'Culegere profesională digitală'.toUpperCase();
+    const html = txt.split('').map((ch,i) =>
+      ch === ' ' ? ' ' : `<span class=\"jumping-magenta\" style=\"animation-delay:${i*0.07}s\">${ch}</span>`
+    ).join('');
+    const el = document.getElementById('header-animated-title');
+    if (el) el.innerHTML = `<span>${html}</span>`;
+  }
+
+  window.addEventListener('hashchange',()=>{
+    render(location.hash.slice(1)||'home');
+    renderHeaderTitle();
+  });
+  render('home');
+  renderHeaderTitle();
+</script>
+</body>
+</html>
